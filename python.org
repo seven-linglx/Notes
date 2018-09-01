@@ -1,0 +1,12 @@
+#+TITLE: Python
+* Python一些函数用法
+** strip(rm)  
+   删除rm字符，没有则删除空白、/r /n等
+** max(arg1, arg2, *args[, key]) 
+   本函数是迭代对象iterable进行比较，找出最大值返回。当key参数不为空时，就以key的函数对象为判断的标准
+** list.count
+   统计list里元素的个数
+** isinstance(object,classinfo) 
+   判断变量是否是这个类型
+** type(p) 
+   输出p的数据类型

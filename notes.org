@@ -172,30 +172,30 @@ int sunday(const string& tar, const string& src)
       + TAB  意指Tab键
       + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住 Control 和 Meta 
 *** ORG快捷 
-    s    #+begin_src ... #+end_src 
-    e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
-    q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
-    v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
-    c    #+begin_center ... #+end_center 
-    l    #+begin_latex ... #+end_latex 
-    L    #+latex: 
-    h    #+begin_html ... #+end_html 
-    H    #+html: 
-    a    #+begin_ascii ... #+end_ascii 
-    A    #+ascii: 
-    i    #+index: line 
-    I    #+include: line
-    上面的单字母为快捷键字母，如输入一个<s 然后TAB后就变为"#+BEGIN_SRC #+END_SRC"
+  + s    #+begin_src ... #+end_src 
+  + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
+  + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
+  + v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
+  + c    #+begin_center ... #+end_center 
+  + l    #+begin_latex ... #+end_latex 
+  + L    #+latex: 
+  + h    #+begin_html ... #+end_html 
+  + H    #+html: 
+  + a    #+begin_ascii ... #+end_ascii 
+  + A    #+ascii: 
+  + i    #+index: line 
+  + I    #+include: line
+  上面的单字母为快捷键字母，如输入一个<s 然后TAB后就变为"#+BEGIN_SRC #+END_SRC"
 *** clang-format-region
 With this integration you can press the bound key and clang-format 
 will format the current line in NORMAL and INSERT mode or the selected 
 region in VISUAL mode. The line or region is extended to the next bigger syntactic entity.
 ** CMake (<2018-08-31 五>)
 *** 获取路径        
-${PROJECT_SOURCE_DIR}
-${CMAKE_CURRENT_SOURCE_DIR}
++ ${PROJECT_SOURCE_DIR}
++ ${CMAKE_CURRENT_SOURCE_DIR}
 ** Git (<2018-09-01 六>)
 *** 配置
-git config --global push.default simple
+**** git config --global push.default simple
 这个配置可以让GIT在PUSH时，只PUSH当前的分支
 
