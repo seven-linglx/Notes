@@ -1,0 +1,201 @@
+#+TITLE: 技术笔记
+#+STARTUP: indent
+* C&C++ 笔记
+** lambda语法（<2018-08-28 二>）
+  #+BEGIN_SRC C++
+  [captures] (parameter list) -> return-type 
+  {
+    lambda body;
+  }
+  #+END_SRC
+  其中captures中要么按值获取，要么按引用获取。
+  If you reference capture a const local variable, it becomes a const reference in the lambda.
+   
+** std::vector (<2018-08-28 二>)
+  vector.capacity() 表示容量大小，占用多少内存
+  vector.size() 表示元素大小，占用实际内存
+  vector.max_size() 最大容量
+  当前v.capacity()=c,v.size()=s;如果s=c+1，那么c就会加倍
+
+* Data structure and Algorithm
+** Graph data structure (<2018-08-28 二>)
+*** 图其实就是一个链表，其节点和边的数据结构定义如下
+    #+BEGIN_SRC C++
+    typedef struct _LINE 
+    {
+      int end;
+      int weight;
+      struct _LINE* next;
+    }LINE;
+
+    typedef struct _VECTEX
+    {
+      int start;
+      int number;
+      LINE* neighbor;
+      struct _VECTEX* next;
+    }VECTEX;
+
+    typedef struct _GRAPH
+    {
+      int count;
+      VECTEX* head;
+    }GRAPH;
+    #+END_SRC
+    
+** 最短路径算法
+*** Floyd-Warshall
+    #+BEGIN_SRC C++
+    for(k=1;k<=n;k++)
+       for(i=1;i<=n;i++)
+          for(j=1;j<=n;j++)
+            if(e[i][k]<inf && e[k][j]<inf && e[i][j]>e[i][k]+e[k][j])
+                e[i][j]=e[i][k]+e[k][j];
+    #+END_SRC
+                
+*** Dijkstra
+    #+BEGIN_SRC C++ -N
+    for(i=1;i<=n-1;i++)
+    {
+      //找到离1号顶点最近的顶点
+      min = inf;
+      for (j = 1; j <= n; j++)
+      {
+        if (book[j] == 0 && dis[j] < min)
+        {
+          min = dis[j];
+          u = j;
+        }
+      }
+      book[u] = 1;
+      for (v = 1; v <= n; v++)
+      {
+        if (e[u][v] < inf)
+        {
+          if (dis[v] > dis[u] + e[u][v])
+            dis[v] = dis[u] + e[u][v];
+        }
+      }
+    }
+    #+END_SRC
+    
+** 用数组实现邻接表
+分别使用u,v,w,first,next五个数组保存图的信息,u、v 和 w 三个数组用来记录每条边的具体信息，
+即 u[i]、v[i]和 w[i]表示 第i条边是从第u[i]号顶点到v[i]号顶点（u[i]->v[i]），且权值为 w[i]
+first[j]的值代表第j号顶点所在的其中一条边的编号，next[k]表示第k条边连接着第next[k]条边，且它
+们属于同一个顶点，即在next数组中可以递归找到同一个顶点的所有边.
+** 快速排序算法
+核心代码
+#+BEGIN_SRC C++
+void QuickSort(std::vector<T>& data, int s, int e)
+{
+  if (s >= e)
+    return;
+
+  T center = data[s];
+  int i = s;
+  int j = e;
+  while (1)
+  {
+    while (data[j] >= center && i < j)
+    {
+      j--;
+    }
+    while (data[i] <= center && i < j)
+    {
+      i++;
+    }
+    if (i < j)
+    {
+      T temp = data[j];
+      data[j] = data[i];
+      data[i] = temp;
+    }
+    else
+    {
+      data[s] = data[i];
+      data[i] = center;
+      break;
+    }
+  }
+  QuickSort<int>(data, s, i - 1);
+  QuickSort<int>(data, j + 1, e);
+}
+#+END_SRC
+
+** 子符串匹配算法 (<2018-08-31 五>)
+*** KMP
+*** BM
+*** Sunday
+核心代码
+#+BEGIN_SRC C++
+int sunday(const string& tar, const string& src)
+{
+  int idx = 0;
+  size_t len_src = src.length();
+  while (idx + len_src <= tar.length())
+  {
+    for (size_t i = 0; i < len_src; ++i)
+    {
+      if (src[i] != tar[idx + i])
+        break;
+      if (i == len_src - 1)
+        return idx;
+    }
+    for (size_t i = 0; i < len_src; ++i)
+    {
+      if (src[i] == tar[idx + len_src])
+      {
+        idx += len_src - i;
+        break;
+      }
+      if (i == len_src - 1)
+      {
+        idx += len_src + 1;
+      }
+    }
+  }
+  return -1;
+}
+#+END_SRC
+
+* Software Tips
+** Emacs (<2018-08-28 二>) 
+*** 按键说明
+   1) 功能键
+      + C-  意思是按住 Ctrol 键
+      + M-   意指 Meta 键 (键盘上若无Meta 键，则可以ALT ESC 键来取而代之)
+      + DEL  意指退格键 (不是 删除(Delete) key)
+      + RET  意指回车键
+      + SPC  意指空格键
+      + ESC  意指Escape键
+      + TAB  意指Tab键
+      + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住 Control 和 Meta 
+*** ORG快捷 
+    s    #+begin_src ... #+end_src 
+    e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
+    q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
+    v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
+    c    #+begin_center ... #+end_center 
+    l    #+begin_latex ... #+end_latex 
+    L    #+latex: 
+    h    #+begin_html ... #+end_html 
+    H    #+html: 
+    a    #+begin_ascii ... #+end_ascii 
+    A    #+ascii: 
+    i    #+index: line 
+    I    #+include: line
+    上面的单字母为快捷键字母，如输入一个<s 然后TAB后就变为"#+BEGIN_SRC #+END_SRC"
+*** clang-format-region
+With this integration you can press the bound key and clang-format 
+will format the current line in NORMAL and INSERT mode or the selected 
+region in VISUAL mode. The line or region is extended to the next bigger syntactic entity.
+** CMake (<2018-08-31 五>)
+*** 获取路径        
+${PROJECT_SOURCE_DIR}
+${CMAKE_CURRENT_SOURCE_DIR}
+** Git (<2018-09-01 六>)
+*** 配置
+git config --global push.default simple
+这个配置可以让GIT在PUSH时，只PUSH当前的分支
+
