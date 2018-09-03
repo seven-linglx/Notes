@@ -198,4 +198,11 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** 配置
 **** git config --global push.default simple
 这个配置可以让GIT在PUSH时，只PUSH当前的分支
+**** git config --global diff.submodule log
+**** git config status.submodulesummary 1
+*** submodule
+**** git submodule add url
+**** git submodule sync 
+**** git submodule init 
+**** git submodule update 
 
