@@ -10,12 +10,60 @@
   #+END_SRC
   其中captures中要么按值获取，要么按引用获取。
   If you reference capture a const local variable, it becomes a const reference in the lambda.
-   
+
 ** std::vector (<2018-08-28 二>)
-  vector.capacity() 表示容量大小，占用多少内存
-  vector.size() 表示元素大小，占用实际内存
-  vector.max_size() 最大容量
-  当前v.capacity()=c,v.size()=s;如果s=c+1，那么c就会加倍
+- vector.capacity() 表示容量大小，占用多少内存
+- vector.size() 表示元素大小，占用实际内存
+- vector.max_size() 最大容量
+- 当前v.capacity()=c,v.size()=s;如果s=c+1，那么c就会加倍
+
+** Timer(micro-second) (<2018-09-04 二>) 
+#+BEGIN_SRC c++
+double startTimeInMicroSec;                 // starting time in micro-second
+double endTimeInMicroSec;                         // ending time in micro-second
+int stopped;                                      // stop flag
+#if defined(WIN32) || defined(_WIN32)
+  LARGE_INTEGER frequency;   // ticks per second
+  LARGE_INTEGER startCount;  //
+  LARGE_INTEGER endCount;    //
+#else
+  timeval startCount;  //
+  timeval endCount;    //
+#endif
+void start()
+{
+  #if defined(WIN32) || defined(_WIN32)
+    QueryPerformanceCounter(&startCount);
+  #else
+    gettimeofday(&startCount, NULL);
+  #endif
+}
+void end()
+{
+  #if defined(WIN32) || defined(_WIN32)
+    QueryPerformanceCounter(&endCount);
+  #else
+    gettimeofday(&endCount, NULL);
+  #endif
+}
+double getElapsedTimeInMicroSec()
+{
+  #if defined(WIN32) || defined(_WIN32)
+  startTimeInMicroSec = startCount.QuadPart * (1000000.0 / frequency.QuadPart);
+  endTimeInMicroSec = endCount.QuadPart * (1000000.0 / frequency.QuadPart);
+  #else
+  startTimeInMicroSec = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
+  endTimeInMicroSec = (endCount.tv_sec * 1000000.0) + endCount.tv_usec;
+  #endif
+  return endTimeInMicroSec - startTimeInMicroSec;
+}
+#+END_SRC
+   
+** Matrix Libraries
+*** Eigen
+只有头文件，使用方便，支持的矩阵运算也非常丰富
+*** Armadillo
+C++下Matlab替代品，Matlab的矩阵操作函数都可以找到对应
 
 * Data structure and Algorithm
 ** Graph data structure (<2018-08-28 二>)
@@ -205,4 +253,14 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 **** git submodule sync 
 **** git submodule init 
 **** git submodule update 
-
+** Ubuntu (<2018-09-04 二>)
+*** U盘read-only 
+1) 方法一
+#+BEGIN_SRC shell
+sudo mount -o remount,rw /dev/sdc
+#+END_SRC
+2) 方法二
+#+BEGIN_SRC shell
+sudo umount
+sudo dosfsck -a /dev/sdc
+#+END_SRC
