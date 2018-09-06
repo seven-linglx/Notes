@@ -8,5 +8,15 @@
    统计list里元素的个数
 ** isinstance(object,classinfo) 
    判断变量是否是这个类型
-** type(p) 
+** type(p)
    输出p的数据类型
+* Python Module
+** subprocess
+   #+BEGIN_SRC python
+     import subprocess
+     subprocess.call(["path-to-program", cur, map, pose])
+     # subprocess.call(["python /home/linglx/PycharmProjects/gui/show_poles.py", i])
+     os.popen('python /home/linglx/PycharmProjects/gui/show_poles.py ' + str(i))
+   #+END_SRC
+** numpy
+ 

@@ -253,6 +253,9 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 **** git submodule sync 
 **** git submodule init 
 **** git submodule update 
+** tig (<2018-09-06 四>)
+*** keymap
+- [shift + c] switch to corresponding branch
 ** Ubuntu (<2018-09-04 二>)
 *** U盘read-only 
 1) 方法一
