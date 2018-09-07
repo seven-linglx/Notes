@@ -210,30 +210,41 @@ int sunday(const string& tar, const string& src)
 * Software Tips
 ** Emacs (<2018-08-28 二>) 
 *** 按键说明
-   1) 功能键
-      + C-  意思是按住 Ctrol 键
-      + M-   意指 Meta 键 (键盘上若无Meta 键，则可以ALT ESC 键来取而代之)
-      + DEL  意指退格键 (不是 删除(Delete) key)
-      + RET  意指回车键
-      + SPC  意指空格键
-      + ESC  意指Escape键
-      + TAB  意指Tab键
-      + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住 Control 和 Meta 
-*** ORG快捷 
-  + s    #+begin_src ... #+end_src 
-  + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
-  + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
-  + v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
-  + c    #+begin_center ... #+end_center 
-  + l    #+begin_latex ... #+end_latex 
-  + L    #+latex: 
-  + h    #+begin_html ... #+end_html 
-  + H    #+html: 
-  + a    #+begin_ascii ... #+end_ascii 
-  + A    #+ascii: 
-  + i    #+index: line 
-  + I    #+include: line
-  上面的单字母为快捷键字母，如输入一个<s 然后TAB后就变为"#+BEGIN_SRC #+END_SRC"
+1) 功能键
+   + C-  意思是按住 Ctrol 键
+   + M-   意指 Meta 键 (键盘上若无Meta 键，则可以ALT ESC 键来取而代之)
+   + DEL  意指退格键 (不是 删除(Delete) key)
+   + RET  意指回车键
+   + SPC  意指空格键
+   + ESC  意指Escape键
+   + TAB  意指Tab键
+   + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住 Control 和 Meta 
+*** ORG 
+1) Input
+   + s    #+begin_src ... #+end_src 
+   + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
+   + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
+   + v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
+   + c    #+begin_center ... #+end_center 
+   + l    #+begin_latex ... #+end_latex 
+   + L    #+latex: 
+   + h    #+begin_html ... #+end_html 
+   + H    #+html: 
+   + a    #+begin_ascii ... #+end_ascii 
+   + A    #+ascii: 
+   + i    #+index: line 
+   + I    #+include: line
+   上面的单字母为快捷键字母，如输入一个<s 然后TAB后就变为"#+BEGIN_SRC #+END_SRC"
+2) Move
+   + gh  outline-up-heading
+   + gj  org-forward-heading-same-level
+   + gl  outline-next-visible-heading
+   + gk  org-backward-heading-same-level
+   + M-l	org-metaright
+   + M-h	org-metaleft
+   + M-k	org-metaup
+   + M-j	org-metadown
+
 *** clang-format-region
 With this integration you can press the bound key and clang-format 
 will format the current line in NORMAL and INSERT mode or the selected 
