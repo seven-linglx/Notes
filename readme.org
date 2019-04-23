@@ -1,9 +1,10 @@
 #+TITLE: 笔记库
-#+STARTUP: indent
 * 简介（Introduction）
-  这里包含一些关于技术和非技术的笔记，比如一些C/C++知识点，Python知识点，应用过的库的使用记录，深度学习笔记，使用过的工具配置及命令，一些摘抄杂记等。
+  这里包含一些关于技术和非技术的笔记，比如一些  C/C++知识点，Python 知识点，应用过的库的使用记录，深度学习笔记，使用过的工具配置及命令，一些摘抄杂记等。
   
 * 目录（Content）
-  - notes 包含C/C++笔记，数据结构与算法笔记，使用工具笔记，深度学习相关知识笔记等等
-  - python 包含使用Python过程中积累的知识点
-  - records 包含摘抄和杂记
+- FluentPython/fluentpython.org FluentPython 这本书的读书笔记
+- PracticeVim/notebook.org  PracticeVim 这本书的读书笔记
+- notes 包含  C/C++笔记，数据结构与算法笔记，使用工具笔记，深度学习相关知识笔记等等
+- python 包含使用  Python 过程中积累的知识点
+- records 包含摘抄和杂记

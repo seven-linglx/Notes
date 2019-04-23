@@ -1,0 +1,48 @@
+#+TITLE: FluentPython的读书笔记
+#+SETUP: indent
+
+* The Table of Contents
+* python的数据模型
+** collection.namedtuple
+  用以构建只有少数属性但是没有方法的对象， 比如数据库条目。
+  创建一个具名元组需要两个参数，一个是类名，另一个是类的各个字段的名字。后者可以是由数个字符串组成的可迭代对象，或者是由空格分隔开的字段名组成的字符串
+  #+BEGIN_SRC python
+    City = namedtuple('City', 'name country population coordinates')
+    tokyo = City('Tokyo', 'JP', 36.933, (35.689722, 139.691667))
+
+    Card = namedtuple("Card", ["rank", "suit"])
+  #+END_SRC
+** 使用__getitem__和__len__将一个类封装成类序列数据结构
+** Python语言参考手册中的“Data Model”（https://docs.python.org/3/reference/datamodel.html） 一章列出了83个特殊方法的名字，其中47个用于实现算术运算、位运算和比较操作
+* 序列构成的数组
+** 列表推导与生成器表达式
+   列表推导来初始化元组、 数组或其他序列类型，生成器表达式背后遵守了迭代器协议，可以逐个地产出元素，避免额外的内存占用
+   生成器表达式的语法跟列表推导差不多， 只不过把方括号换成圆括号
+** tuple拆包
+   _可用来做占位符，但只能占一个位
+   *args可用来占剩余的所有元素
+** 省略(ellipsis)
+   书写方式是三个...
+   Ellipsis是ellipsis类的单一实例，ellipsis是类名，全小写，而它的内置实例写作Ellipsis。这其实跟bool是小写，但是它的两个实例写作True和False异曲同工
+   
+** 切片
+   切片可以被赋值，只是要保证右边是可迭代类型
+** bisect
+   在序列长度较长时，可用来替换index
+   在插入新元素的同时还想保持有序序列的顺序， 那么需要用到 bisect.insort
+** 替代列表的数据结构
+   数据数量多时，用array，因为其背后使用了字节表述，直接操作内存
+   对序列进行先进先出时，deque速度更快检查一个元素是否在一个集合中，用set
+** array
+   array('b', ['a', 'b']) 其中b是类型码，代表signed char，创建出的数组就只能存放一个字节大小的整数，范围从 -128 到 127
+
+** collections.deque
+   dq.rotate(3 or -1)
+   dq.appendleft(1)
+   dq.extend([1, 2])
+   dq.extendleft([1, 2])
+   append和popleft是原子操作，多线程中安全使用，不需要担心资源锁
+** Timsort
+   sorted, list.sort背后的排序算法是timsort,它是一种自适应算法，会根据原始数据的顺序特点交替使用插入排序和归并排序.
+   
+** 标准库里的所有映射类型都是利用dict来实现的,键值要求是可散列的数据
