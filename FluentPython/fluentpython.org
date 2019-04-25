@@ -1,8 +1,30 @@
-#+TITLE: FluentPython的读书笔记
-#+SETUP: indent
+#+TITLE: FluentPython 的读书笔记
 
-* The Table of Contents
-* python的数据模型
+* The Table of Contents :TOC_2_gh:
+- [[#第一章--python-的数据模型][第一章  python 的数据模型]]
+  - [[#collectionnamedtuple][collection.namedtuple]]
+- [[#第二章-序列构成的数组][第二章 序列构成的数组]]
+  - [[#列表推导与生成器表达式][列表推导与生成器表达式]]
+  - [[#tuple-拆包][tuple 拆包]]
+  - [[#省略-ellipsis][省略( ellipsis)]]
+  - [[#切片][切片]]
+  - [[#bisect][bisect]]
+  - [[#替代列表的数据结构][替代列表的数据结构]]
+  - [[#array][array]]
+  - [[#collectionsdeque][collections.deque]]
+  - [[#timsort][Timsort]]
+  - [[#标准库里的所有映射类型都是利用--dict-来实现的键值要求是可散列的数据][标准库里的所有映射类型都是利用  dict 来实现的,键值要求是可散列的数据]]
+- [[#第三章-字典和集合][第三章 字典和集合]]
+  - [[#字典生成][字典生成]]
+  - [[#字典元操作][字典元操作]]
+  - [[#collectionsordereddict][collections.OrderedDict]]
+  - [[#collectionschinamap-collectionscounter-collectionsuserdict][collections.ChinaMap, collections.Counter, collections.UserDict]]
+  - [[#typesmappingproxytype][types.MappingProxyType]]
+  - [[#set][set]]
+  - [[#set字面量][set字面量]]
+  - [[#dict和set背后的实现][dict和set背后的实现]]
+
+* 第一章  python 的数据模型
 ** collection.namedtuple
   用以构建只有少数属性但是没有方法的对象， 比如数据库条目。
   创建一个具名元组需要两个参数，一个是类名，另一个是类的各个字段的名字。后者可以是由数个字符串组成的可迭代对象，或者是由空格分隔开的字段名组成的字符串
@@ -12,37 +34,68 @@
 
     Card = namedtuple("Card", ["rank", "suit"])
   #+END_SRC
-** 使用__getitem__和__len__将一个类封装成类序列数据结构
-** Python语言参考手册中的“Data Model”（https://docs.python.org/3/reference/datamodel.html） 一章列出了83个特殊方法的名字，其中47个用于实现算术运算、位运算和比较操作
-* 序列构成的数组
+  - 使用__getitem__和__len__将一个类封装成类序列数据结构
+  - Python 语言参考手册中的“ Data Model”（https://docs.python.org/3/reference/datamodel.html） 一章列出了  83 个特殊方法的名字，其中  47 个用于实现算术运算、位运算和比较操作
+* 第二章 序列构成的数组
 ** 列表推导与生成器表达式
    列表推导来初始化元组、 数组或其他序列类型，生成器表达式背后遵守了迭代器协议，可以逐个地产出元素，避免额外的内存占用
    生成器表达式的语法跟列表推导差不多， 只不过把方括号换成圆括号
-** tuple拆包
+** tuple 拆包
    _可用来做占位符，但只能占一个位
-   *args可用来占剩余的所有元素
-** 省略(ellipsis)
+   *args 可用来占剩余的所有元素
+** 省略( ellipsis)
    书写方式是三个...
-   Ellipsis是ellipsis类的单一实例，ellipsis是类名，全小写，而它的内置实例写作Ellipsis。这其实跟bool是小写，但是它的两个实例写作True和False异曲同工
+   Ellipsis 是e llipsis 类的单一实例，ellipsis 是类名，全小写，而它的内置实例写作  Ellipsis。这其实跟  bool 是小写，但是它的两个实例写作  True 和F alse 异曲同工
    
 ** 切片
    切片可以被赋值，只是要保证右边是可迭代类型
 ** bisect
-   在序列长度较长时，可用来替换index
-   在插入新元素的同时还想保持有序序列的顺序， 那么需要用到 bisect.insort
+   在序列长度较长时，可用来替换  index
+   在插入新元素的同时还想保持有序序列的顺序， 那么需要用到  bisect.insort
 ** 替代列表的数据结构
-   数据数量多时，用array，因为其背后使用了字节表述，直接操作内存
-   对序列进行先进先出时，deque速度更快检查一个元素是否在一个集合中，用set
+   数据数量多时，用a rray，因为其背后使用了字节表述，直接操作内存
+   对序列进行先进先出时，deque 速度更快检查一个元素是否在一个集合中，用s et
 ** array
-   array('b', ['a', 'b']) 其中b是类型码，代表signed char，创建出的数组就只能存放一个字节大小的整数，范围从 -128 到 127
+   array('b', ['a', 'b']) 其中  b 是类型码，代表  signed char，创建出的数组就只能存放一个字节大小的整数，范围从 -128 到  127
 
 ** collections.deque
    dq.rotate(3 or -1)
    dq.appendleft(1)
    dq.extend([1, 2])
    dq.extendleft([1, 2])
-   append和popleft是原子操作，多线程中安全使用，不需要担心资源锁
+   append 和p opleft 是原子操作，多线程中安全使用，不需要担心资源锁
 ** Timsort
-   sorted, list.sort背后的排序算法是timsort,它是一种自适应算法，会根据原始数据的顺序特点交替使用插入排序和归并排序.
+   sorted, list.sort 背后的排序算法是  timsort,它是一种自适应算法，会根据原始数据的顺序特点交替使用插入排序和归并排序.
    
-** 标准库里的所有映射类型都是利用dict来实现的,键值要求是可散列的数据
+** 标准库里的所有映射类型都是利用  dict 来实现的,键值要求是可散列的数据
+* 第三章 字典和集合
+** 字典生成
+  #+begin_src python
+  b = {'one': 1, 'two': 2, 'three': 3}
+  d = dict([('two', 2), ('one', 1), ('three', 3)])
+  c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+  country_code = {country: code for code, country in DIAL_CODES}
+  #+end_src
+** 字典元操作
+   + dict[] 操作实际上是调用__getitem__
+   + key in dict 实际上是调用__contains__
+   + \__getitem__找不到的情况下会调用__missing__
+** collections.OrderedDict
+   + 保持键添加时的顺序
+   + OrderedDict.popitem() 默认删除字典里最后一个元素
+   + OrderedDict.popitem(last=False) 删除第一个元素
+** collections.ChinaMap, collections.Counter, collections.UserDict
+** types.MappingProxyType
+   可以实现对dict再包一层，原先dict里的内容只能访问，不能修改
+** set
+   两个集合a和b，可以进行中缀运算符，a&b求交集，a|b求合集，a-b求差集
+** set字面量
+   a = set() # 创建一个空的集合
+   a = {} # 创建的并不是集合，而是空字典
+   b = {1, 2} # 创建一个包含元素1和2的集合
+   c = set([1, 2]) # 同b一样，但速度慢些
+** dict和set背后的实现
+   都是使用散列表实现的，散列表其实是一个稀疏数组（总是有空白元素的数组称为稀疏数组)。在一般的数据结
+构教材中， 散列表里的单元通常叫作表元（bucket）。在dict 的散列表当中，每个键值对都占用一个表元，每个
+表元都有两个部分，一个是对键的引用，另一个是对值的引用。因为所有表元的大小一致，所以可以通过偏移量来
+读取某个表元。

@@ -3,7 +3,7 @@
 
 * Table of Contents :TOC_2_gh:noexport:
 - [[#cc-笔记][C&C++ 笔记]]
-  - [[#lambda-语法 2018-08-28-二][lambda 语法（<2018-08-28 二>）]]
+  - [[#lambda-语法2018-08-28-二][lambda 语法（<2018-08-28 二>）]]
   - [[#stdvector-2018-08-28-二][std::vector (<2018-08-28 二>)]]
   - [[#timermicro-second-2018-09-04-二][Timer(micro-second) (<2018-09-04 二>)]]
   - [[#matrix-libraries][Matrix Libraries]]
@@ -12,7 +12,7 @@
   - [[#最短路径算法][最短路径算法]]
   - [[#用数组实现邻接表][用数组实现邻接表]]
   - [[#快速排序算法][快速排序算法]]
-  - [[#子符串匹配算法- 2018-08-31-五][子符串匹配算法 (<2018-08-31 五>)]]
+  - [[#子符串匹配算法-2018-08-31-五][子符串匹配算法 (<2018-08-31 五>)]]
 - [[#software-tips][Software Tips]]
   - [[#spacemacs-2018-08-28-二][spacemacs (<2018-08-28 二>)]]
   - [[#cmake-2018-08-31-五][CMake (<2018-08-31 五>)]]
@@ -276,7 +276,28 @@ int sunday(const string& tar, const string& src)
   (set-fontset-font (frame-parameter nil 'font) charset
                     (font-spec :family "微软雅黑" :size 16)))
 #+end_src
-然后使用  SPC z x 来调整字体大小，发现 org-table 里对齐为此
+然后使用  SPC z x 来调整字体大小，发现  org-table 里对齐为此
+*** org 输入特殊字符
+- 输入下划线用  underlined\under == underlined_
+- 输入加号用 \plus{}< == +<
+- 输入周长公式 \pi{}d
+- 中文和英文之间多了空格，可能是因为pangu-space-mode的原因，关掉它就可以了。
+*** org-mode自动换行
+参考：https://emacs-china.org/t/emacs-org-mode/6748/4
+关于auto-fill mode:
+用 M-x auto-fill-mode 打开 auto-fill mode；
+用 M-q 重排段落的每行字数；
+用 C-u 80 C-x f 设定每行80字，再在需要重排的地方按 M-q 更新。
+
+关于org的自动缩进：
+org确实会在一些地方默认进行缩进，例如代码块。
+如果打开了 org-indent-mode 也是会按照大纲逐级缩进。
+Emacs的自动缩进也有可能造成你说的现象，检查一下 electric-indent-mode， newline-and-indent 之类的设置。
+
+关于日志换行的选择：
+对于写日志这种会频繁出现长段落的情况，除了用 auto-fill mode 进行 hard linewrap （是翻译成硬换行吗），还可以用soft linewrap的方案 （根据窗口大小自动调整每行显示的字数）。
+我记得，如果有 setq truncate-lines nil ， org就自动显示换行了，做到soft linewrap的效果。
+当然，Emacs有更友好的 visual-line-mode ，是写英语论文的必备。
 *** clang-format-region
 With this integration you can press the bound key and clang-format 
 will format the current line in NORMAL and INSERT mode or the selected 
