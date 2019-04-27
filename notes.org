@@ -20,6 +20,7 @@
   - [[#tig-2018-09-06-四][tig (<2018-09-06 四>)]]
   - [[#ubuntu-2018-09-04-二][Ubuntu (<2018-09-04 二>)]]
   - [[#cygwin][Cygwin]]
+  - [[#vim][Vim]]
 
 * C&C++ 笔记
 ** lambda 语法（<2018-08-28 二>）
@@ -240,10 +241,8 @@ int sunday(const string& tar, const string& src)
    + ESC  意指  Escape 键
    + TAB  意指  Tab 键
    + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta 
-*** 操作技巧
- 1.在查找文件时直接输入' C:/'，可以直接切换磁盘目录
 *** ORG 
-1) Input
+1) Input(org-insert-structure-template)
    + s    #+begin_src ... #+end_src 
    + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
    + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
@@ -305,9 +304,32 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** helm-projectile
 - (setq projectile-indexing-method 'native)
 - (spacemacs/set-leader-keys "pf" 'counsel-projectile-find-file)
+- 在查找文件时直接输入' C:/'，可以直接切换磁盘目录
 *** org 文件内添加目录（内部链接）
 直接在目录的地方输入: TOC:或者: TOC_2_gh:或者: TOC_2_gh:noexport:
 [[https://github.com/snosov1/toc-org][org-toc]]
+*** dired-mode
+- SPC f j 进入dired模式，其实是打开dired buffer
+- M-x dired 选中一个文件夹再回车，进入dired
+- 快捷命令
+| 命令    | 作用                                  |
+|---------+---------------------------------------|
+| +       | 新建一个目录                          |
+| C-x C-f | 新建一个文件                          |
+| j,k,n,p | 上下移动                              |
+| <,>     | 目录行中移动                          |
+| ^       | 上一级目录                            |
+| g       | 刷新文件列表                          |
+| m       | 标记文件或目录（*标）                 |
+| d       | flag(D标）                            |
+| u       | 取消标记                              |
+| x       | 删除D标文件                           |
+| D       | 删除*标文件，也可以直接删除文件或目录 |
+| C       | 拷贝到...                             |
+| R       | 重命名...，移动到...                  |
+| w       | 复制文件名                            |
+| v       | 预览文件，q退出预览                   |
+
 *** doom-modeline
 这个  modeline 依赖  all-the-icons 里的字体，从a ll-the-icons 仓库  clone 下来，windows 要手动安装。其它可以在  emacs 里直接使用  all-the-icons-font-install 安装.
 *** 按键映射
@@ -369,3 +391,6 @@ sudo dosfsck -a /dev/sdc
 - mingw-86_64-gcc-g++
 - gdb
 - gcc-g++-core
+** Vim
+*** vim做映射时使用<C-u>做前缀的原因
+其实<C-U>的作用就是在command模式中删除所有的文本
