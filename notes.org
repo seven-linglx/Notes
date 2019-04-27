@@ -341,6 +341,11 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
  git pull --rebase origin master
 解决冲突再
  git rebase --continue
+*** 修改历史提交的commit信息
+- git rebase -i HEAD~3
+- 修改pick为edit，保存退出
+- git commit --amend
+- git rebase --continue
 ** tig (<2018-09-06 四>)
 *** keymap
 - [shift + c] switch to corresponding branch
