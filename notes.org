@@ -23,6 +23,8 @@
   - [[#cygwin][Cygwin]]
   - [[#vim][Vim]]
 - [[#java][Java]]
+- [[#windows][windows]]
+  - [[#终端][终端]]
 
 * C&C++ 笔记
 ** 基本概念
@@ -351,6 +353,8 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - (setq vc-handled-backends ())
 - (setq vc-handled-backends nil)
 - (setq create-lockfiles nil) 禁止创建锁定文件
+*** 国内源
+- 腾讯源 https://mirrors.cloud.tencent.com/help/elpa.html
 ** CMake (<2018-08-31 五>)
 *** 获取路径
 + ${PROJECT_SOURCE_DIR}
@@ -434,3 +438,28 @@ export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/�
 - Visual模式下执行命令，会对选中的特定区块进行注释/反注释
 * Java
 -  Java的 == 运算符比较的是对象（不是基本类型）的引用，而不是对象的值
+
+*** 将 CapsLock 设为 Ctrl
+#+BEGIN_SRC shell
+vim /etc/default/keyboard
+add XKBOPTIONS="ctrl:swapcaps" or XKBOPTIONS="ctrl:nocaps"
+run sudo dpkg-reconfigure keyboard-configuration
+#+END_SRC
+
+*** 安装emacs26.2
+- sudo add-apt-repository ppa:kelleyk/emacs
+- sudo apt update
+- sudo apt install emacs26
+* windows
+** 终端
+先安装了 cygwin
+再安装一系列插件：git tig zsh fish 
+安装 oh-my-zsh
+oh-my-zsh 的插件:zsh-syntax... zsh-suggestion... (bug：直接在 github 上用右键下载，win10 不能识别，要下载全部的库)
+oh-my-zsh 的主题，特殊符号不能显示-->又去解决字体问题，下载 nerd 字体，最后从自己电脑复制过去的
+在 cygwin 的 minsys 中，中文显示乱码，git 使用也异常（可能是原先 git for windows 中 git 版本与 cygwin 中的 git 版本不兼容造成）
+想在 git for windows 的 minsys 中直接使用 cygwin 中的 tmux,zsh，但一直不能识别，不知是不是系统环境变量 PATH 没起作用？
+尝试过把 tmux 的文件和依赖直接复制过去，并不行。
+把 git for windows 中的 bash,minsys 复制到 cygwin 中，并不能直接运行
+zsh 中 git log 显示中文乱码，在 zshrc 中设置 export LESSCHARSET=UTF-8
+另一个 windows 体验 linux 的工具 babun, 准备尝试
