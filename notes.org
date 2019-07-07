@@ -3,6 +3,7 @@
 
 * Table of Contents :TOC_2_gh:noexport:
 - [[#cc-笔记][C&C++ 笔记]]
+  - [[#基本概念][基本概念]]
   - [[#lambda-语法2018-08-28-二][lambda 语法（<2018-08-28 二>）]]
   - [[#stdvector-2018-08-28-二][std::vector (<2018-08-28 二>)]]
   - [[#timermicro-second-2018-09-04-二][Timer(micro-second) (<2018-09-04 二>)]]
@@ -21,11 +22,15 @@
   - [[#ubuntu-2018-09-04-二][Ubuntu (<2018-09-04 二>)]]
   - [[#cygwin][Cygwin]]
   - [[#vim][Vim]]
+- [[#java][Java]]
 
 * C&C++ 笔记
+** 基本概念
+- |= 是按位或并赋值的意思，a|=b就是a=a|b
+- clang-tidy is a clang-based C++ “linter” tool
 ** lambda 语法（<2018-08-28 二>）
   #+BEGIN_SRC C++
-  [captures] (parameter list) -> return-type 
+  [captures] (parameter list) -> return-type
   {
     lambda body;
   }
@@ -39,7 +44,7 @@
 - vector.max_size() 最大容量
 - 当前  v.capacity()=c,v.size()=s;如果  s=c+1，那么  c 就会加倍
 
-** Timer(micro-second) (<2018-09-04 二>) 
+** Timer(micro-second) (<2018-09-04 二>)
 #+BEGIN_SRC c++
 double startTimeInMicroSec;                 // starting time in micro-second
 double endTimeInMicroSec;                         // ending time in micro-second
@@ -80,18 +85,19 @@ double getElapsedTimeInMicroSec()
   return endTimeInMicroSec - startTimeInMicroSec;
 }
 #+END_SRC
-   
+
 ** Matrix Libraries
 *** Eigen
 只有头文件，使用方便，支持的矩阵运算也非常丰富
 *** Armadillo
 C++下M atlab 替代品，Matlab 的矩阵操作函数都可以找到对应
 
+
 * Data structure and Algorithm
 ** Graph data structure (<2018-08-28 二>)
 *** 图其实就是一个链表，其节点和边的数据结构定义如下
     #+BEGIN_SRC C++
-    typedef struct _LINE 
+    typedef struct _LINE
     {
       int end;
       int weight;
@@ -112,7 +118,7 @@ C++下M atlab 替代品，Matlab 的矩阵操作函数都可以找到对应
       VECTEX* head;
     }GRAPH;
     #+END_SRC
-    
+
 ** 最短路径算法
 *** Floyd-Warshall
     #+BEGIN_SRC C++
@@ -122,7 +128,7 @@ C++下M atlab 替代品，Matlab 的矩阵操作函数都可以找到对应
             if(e[i][k]<inf && e[k][j]<inf && e[i][j]>e[i][k]+e[k][j])
                 e[i][j]=e[i][k]+e[k][j];
     #+END_SRC
-                
+
 *** Dijkstra
     #+BEGIN_SRC C++ -N
     for(i=1;i<=n-1;i++)
@@ -148,7 +154,7 @@ C++下M atlab 替代品，Matlab 的矩阵操作函数都可以找到对应
       }
     }
     #+END_SRC
-    
+
 ** 用数组实现邻接表
 分别使用  u,v,w,first,next 五个数组保存图的信息, u、v 和  w 三个数组用来记录每条边的具体信息，
 即  u[i]、v[i]和  w[i]表示 第i 条边是从第  u[i]号顶点到  v[i]号顶点（u[i]->v[i]），且权值为  w[i]
@@ -230,7 +236,7 @@ int sunday(const string& tar, const string& src)
 #+END_SRC
 
 * Software Tips
-** spacemacs (<2018-08-28 二>) 
+** spacemacs (<2018-08-28 二>)
 *** 按键说明
  1) 功能键
    + C-  意思是按住  Ctrol 键
@@ -240,21 +246,23 @@ int sunday(const string& tar, const string& src)
    + SPC  意指空格键
    + ESC  意指  Escape 键
    + TAB  意指  Tab 键
-   + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta 
-*** ORG快捷键 
+   + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta
+*** 查看变量的命令
+- 查看变量的值（c-h v），快捷键对应的函数(c-h k)，方便查找函数(c-h f)
+*** ORG快捷键
 1) Input(org-insert-structure-template)
-   + s    #+begin_src ... #+end_src 
+   + s    #+begin_src ... #+end_src
    + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
    + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
    + v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
-   + c    #+begin_center ... #+end_center 
-   + l    #+begin_latex ... #+end_latex 
-   + L    #+latex: 
-   + h    #+begin_html ... #+end_html 
-   + H    #+html: 
-   + a    #+begin_ascii ... #+end_ascii 
-   + A    #+ascii: 
-   + i    #+index: line 
+   + c    #+begin_center ... #+end_center
+   + l    #+begin_latex ... #+end_latex
+   + L    #+latex:
+   + h    #+begin_html ... #+end_html
+   + H    #+html:
+   + a    #+begin_ascii ... #+end_ascii
+   + A    #+ascii:
+   + i    #+index: line
    + I    #+include: line
    上面的单字母为快捷键字母，如输入一个< s 然后  TAB 后就变为"#+BEGIN_SRC #+END_SRC"，也就是命令  org-insert-structure-template
 2) Move
@@ -298,8 +306,8 @@ Emacs的自动缩进也有可能造成你说的现象，检查一下 electric-in
 我记得，如果有 setq truncate-lines nil ， org就自动显示换行了，做到soft linewrap的效果。
 当然，Emacs有更友好的 visual-line-mode ，是写英语论文的必备。
 *** clang-format-region
-With this integration you can press the bound key and clang-format 
-will format the current line in NORMAL and INSERT mode or the selected 
+With this integration you can press the bound key and clang-format
+will format the current line in NORMAL and INSERT mode or the selected
 region in VISUAL mode. The line or region is extended to the next bigger syntactic entity.
 *** helm-projectile
 - (setq projectile-indexing-method 'native)
@@ -340,10 +348,11 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 (define-key evil-insert-state-map (kbd "C-l") (kbd "<right>"))
 #+END_SRC
 *** 一些配置
-(setq vc-handled-backends ())
-(setq vc-handled-backends nil) 
+- (setq vc-handled-backends ())
+- (setq vc-handled-backends nil)
+- (setq create-lockfiles nil) 禁止创建锁定文件
 ** CMake (<2018-08-31 五>)
-*** 获取路径        
+*** 获取路径
 + ${PROJECT_SOURCE_DIR}
 + ${CMAKE_CURRENT_SOURCE_DIR}
 *** 编译指令
@@ -370,9 +379,9 @@ git config --global core.safecrlf false
 git config --global core.safecrlf warn
 *** submodule
 **** git submodule add url
-**** git submodule sync 
-**** git submodule init 
-**** git submodule update 
+**** git submodule sync
+**** git submodule init
+**** git submodule update
 *** 本地  reset后，造成与远程不同步时处理办法
  git pull --rebase origin master
 解决冲突再
@@ -386,7 +395,7 @@ git config --global core.safecrlf warn
 *** keymap
 - [shift + c] switch to corresponding branch
 ** Ubuntu (<2018-09-04 二>)
-*** U 盘r ead-only 
+*** U 盘r ead-only
 1) 方法一
 #+BEGIN_SRC shell
 sudo mount -o remount,rw /dev/sdc
@@ -410,3 +419,18 @@ export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/�
 ** Vim
 *** vim做映射时使用<C-u>做前缀的原因
 其实<C-U>的作用就是在command模式中删除所有的文本
+*** NERD_commenter
+- ,ca在可选的注释方式之间切换，比如C/C++ 的块注释/* */和行注释//
+- ,cc注释当前行
+- ,c<space> 切换注释/非注释状态
+- ,cs 以”性感”的方式注释
+- ,cA 在当前行尾添加注释符，并进入Insert模式
+- ,cu 取消注释
+- ,c$ 从光标开始到行尾注释  ，这个要说说因为c$也是从光标到行尾的快捷键，这个按过逗号（，）要快一点按c$
+- 2,cc 光标以下count行添加注释
+- 2,cu 光标以下count行取消注释
+- 2,cm:光标以下count行添加块注释(2,cm)
+- Normal模式下，几乎所有命令前面都可以指定行数
+- Visual模式下执行命令，会对选中的特定区块进行注释/反注释
+* Java
+-  Java的 == 运算符比较的是对象（不是基本类型）的引用，而不是对象的值

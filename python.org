@@ -1,5 +1,4 @@
 #+TITLE: Python
-#+SETUP: indent
 * Python一些函数用法
 ** strip(rm)  
    删除rm字符，没有则删除空白、/r /n等

@@ -1,0 +1,19 @@
+#+TITLE: C++并发编程实践
+
+* 目录 :TOC_2_gh:
+- [[#第二章-线程管理][第二章 线程管理]]
+
+* 第二章 线程管理
+  - join 会阻塞主线程，子线程执行完后，然后主和子再汇合
+  - detach 子线程会失去与主线程的联系，子线程在后台运行
+  - joinable 判断线程是否可以被join或detach
+  - 拷贝构造函数和拷贝赋值函数，后面的=delete是不让编译器自动生成它们
+    #+begin_src c++
+    thread_guard(thread_guard const&)=delete;
+    thread_guard& operator=(thread_guard const&)=delete;
+    #+end_src
+  - detach出的线程也叫分离线程或者守护线程，即使主线程退出了还在后台运行
+  - 线程的构造函数并不会判断函数的参数类型，如果函数需要的参数是一个引用，实际传
+    递给函数的参数是data变量内部的拷贝，而非数据本身的引用。在给线程传参时使用
+    std::ref可以将参数转换成引用的形式。
+  - 2.4
