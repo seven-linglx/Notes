@@ -354,6 +354,8 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 
 *** doom-modeline
 这个  modeline 依赖  all-the-icons 里的字体，从a ll-the-icons 仓库  clone 下来，windows 要手动安装。其它可以在  emacs 里直接使用  all-the-icons-font-install 安装.
+*** 一些有用命令
++ SPC t i 显示代码缩进线
 *** 按键映射
 #+BEGIN_SRC elisp
 (define-key evil-insert-state-map (kbd "C-h") (kbd "<left>"))
@@ -367,6 +369,7 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - (setq create-lockfiles nil) 禁止创建锁定文件
 *** 国内源
 - 腾讯源 https://mirrors.cloud.tencent.com/help/elpa.html
+- 去除spacemacs默认设置的函数、变量名加粗: 鼠标移到想改的地方，M-x customize-face
 ** CMake (<2018-08-31 五>)
 *** 获取路径
 + ${PROJECT_SOURCE_DIR}
@@ -449,6 +452,10 @@ export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/�
 - 2,cm:光标以下count行添加块注释(2,cm)
 - Normal模式下，几乎所有命令前面都可以指定行数
 - Visual模式下执行命令，会对选中的特定区块进行注释/反注释
+*** 快捷键
++ C-w v 竖向分屏
++ C-w s 横向分屏
++ C-w c 关闭分屏
 * Java
 -  Java的 == 运算符比较的是对象（不是基本类型）的引用，而不是对象的值
 
