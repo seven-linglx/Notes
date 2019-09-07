@@ -16,4 +16,6 @@
   - 线程的构造函数并不会判断函数的参数类型，如果函数需要的参数是一个引用，实际传
     递给函数的参数是data变量内部的拷贝，而非数据本身的引用。在给线程传参时使用
     std::ref可以将参数转换成引用的形式。
-  - 2.4
+  - std::move, std::bind
+  - std::thread::hardware_concurrency() 获取系统支持的最高并行数量，获取失败则返回0
+  - std::thread::id _id = std::this_thread::get_id()来获取线程唯一标识

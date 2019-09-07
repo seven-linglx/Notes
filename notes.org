@@ -1,5 +1,4 @@
 #+TITLE: 技术笔记
-#+STARTUP: indent
 
 * Table of Contents :TOC_2_gh:noexport:
 - [[#cc-笔记][C&C++ 笔记]]
@@ -413,6 +412,9 @@ git config --global core.safecrlf warn
 ** tig (<2018-09-06 四>)
 *** keymap
 - [shift + c] switch to corresponding branch
+*** 中文乱码
+1. sudo apt install libncursesw5 libncursesw5-dev //这个可以避免中文乱码
+2. 重新更新tig再安装
 ** Ubuntu (<2018-09-04 二>)
 *** U 盘 read-only
 1) 方法一
