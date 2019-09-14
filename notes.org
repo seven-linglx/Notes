@@ -14,7 +14,9 @@
   - [[#快速排序算法][快速排序算法]]
   - [[#子符串匹配算法-2018-08-31-五][子符串匹配算法 (<2018-08-31 五>)]]
 - [[#software-tips][Software Tips]]
+  - [[#pipenv][pipenv]]
   - [[#spacemacs-2018-08-28-二][spacemacs (<2018-08-28 二>)]]
+  - [[#doom-emacs][doom-emacs]]
   - [[#cmake-2018-08-31-五][CMake (<2018-08-31 五>)]]
   - [[#git-2018-09-01-六][Git (<2018-09-01 六>)]]
   - [[#tig-2018-09-06-四][tig (<2018-09-06 四>)]]
@@ -236,6 +238,33 @@ int sunday(const string& tar, const string& src)
 #+END_SRC
 
 * Software Tips
+** pipenv
+*** install
+- pip install pipenv
+*** create env in your project dir
+- pipenv install
+- pipenv --python 3.7
+- 修改Pipfile里的pip url
+*** activate
+- pipenv shell 激活当前pipenv
+- exit 退出
+- pipenv run 不激活当前pipenv，但以当前pipenv运行脚本
+- pipenv --rm 删除当前pipenv
+*** install packages
+- pipenv install numpy==1.22.11
+- pipenv install pytest --dev 只为开发环境安装包
+*** ready for pro
+- pipenv lock 把当前环境的模块lock住, 它会更新Pipfile.lock文件，该文件是用于生产环境的，你永远不应该编辑它
+*** create for pro
+- pipenv install --ignore-pipfile 然后只需要把代码和Pipfile.lock放到生产环境，运行下面的代码，就可以
+  创建和开发环境一样的环境咯，Pipfile.lock里记录了所有包和子依赖包的确切版本，因此是确定构建
+*** create for another dev
+- pipenv install --dev 要在另一个开发环境做开发，则将代码和Pipfile复制过去
+*** other
+- pipenv --envs 打印当前环境pipenv的环境变量
+- pipenv --py 打印当前项目使用的python信息
+- pipenv graph 打印依赖树图
+- pipenv install -r requirements.txt
 ** spacemacs (<2018-08-28 二>)
 *** 按键说明
  1) 功能键
@@ -369,6 +398,12 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** 国内源
 - 腾讯源 https://mirrors.cloud.tencent.com/help/elpa.html
 - 去除spacemacs默认设置的函数、变量名加粗: 鼠标移到想改的地方，M-x customize-face
+** doom-emacs
+*** settings
+- (add-hook 'window-setup-hook #'toggle-frame-maximized) 最大化
+- (add-hook 'window-setup-hook #'toggle-frame-fullscreen) 全屏
+- (pushnew! initial-frame-alist '(width . 200) '(height . 55)) 设置窗口大小
+- (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 ** CMake (<2018-08-31 五>)
 *** 获取路径
 + ${PROJECT_SOURCE_DIR}
@@ -427,6 +462,7 @@ sudo umount
 sudo dosfsck -a /dev/sdc
 #+END_SRC
 <<<<<<< HEAD
+- chmod -R 777 targetdir 批量递归修改文件权限
 ** Cygwin
 *** 安装  gcc/g++编译环境
 - cmake
