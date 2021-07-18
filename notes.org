@@ -1,241 +1,26 @@
 #+TITLE: 技术笔记
+#+INDENT: STARTUP
 
 * Table of Contents :TOC_2_gh:noexport:
-- [[#cc-笔记][C&C++ 笔记]]
-  - [[#基本概念][基本概念]]
-  - [[#lambda-语法2018-08-28-二][lambda 语法（<2018-08-28 二>）]]
-  - [[#stdvector-2018-08-28-二][std::vector (<2018-08-28 二>)]]
-  - [[#timermicro-second-2018-09-04-二][Timer(micro-second) (<2018-09-04 二>)]]
-  - [[#matrix-libraries][Matrix Libraries]]
-- [[#data-structure-and-algorithm][Data structure and Algorithm]]
-  - [[#graph-data-structure-2018-08-28-二][Graph data structure (<2018-08-28 二>)]]
-  - [[#最短路径算法][最短路径算法]]
-  - [[#用数组实现邻接表][用数组实现邻接表]]
-  - [[#快速排序算法][快速排序算法]]
-  - [[#子符串匹配算法-2018-08-31-五][子符串匹配算法 (<2018-08-31 五>)]]
 - [[#software-tips][Software Tips]]
   - [[#pipenv][pipenv]]
   - [[#spacemacs-2018-08-28-二][spacemacs (<2018-08-28 二>)]]
   - [[#doom-emacs][doom-emacs]]
-  - [[#cmake-2018-08-31-五][CMake (<2018-08-31 五>)]]
-  - [[#git-2018-09-01-六][Git (<2018-09-01 六>)]]
+  - [[#org-mode][org-mode]]
+  - [[#cmake-2018-08-31-五][cmake (<2018-08-31 五>)]]
+  - [[#gccg][gcc/g++]]
+  - [[#git-2018-09-01-六][git (<2018-09-01 六>)]]
   - [[#tig-2018-09-06-四][tig (<2018-09-06 四>)]]
-  - [[#ubuntu-2018-09-04-二][Ubuntu (<2018-09-04 二>)]]
-  - [[#cygwin][Cygwin]]
-  - [[#vim][Vim]]
-- [[#java][Java]]
+  - [[#cygwin][cygwin]]
+  - [[#vim][vim]]
+  - [[#pycharm][pycharm]]
 - [[#windows][windows]]
   - [[#终端][终端]]
-
-* C&C++ 笔记
-** 基本概念
-- |= 是按位或并赋值的意思，a|=b就是a=a|b
-- clang-tidy is a clang-based C++ “linter” tool
-** lambda 语法（<2018-08-28 二>）
-  #+BEGIN_SRC C++
-  [captures] (parameter list) -> return-type
-  {
-    lambda body;
-  }
-  #+END_SRC
-  其中 captures 中要么按值获取，要么按引用获取。
-  If you reference capture a const local variable, it becomes a const reference in the lambda.
-
-** std::vector (<2018-08-28 二>)
-- vector.capacity() 表示容量大小，占用多少内存
-- vector.size() 表示元素大小，占用实际内存
-- vector.max_size() 最大容量
-- 当前 v.capacity()=c,v.size()=s;如果 s=c+1，那么 c 就会加倍
-
-** Timer(micro-second) (<2018-09-04 二>)
-#+BEGIN_SRC c++
-double startTimeInMicroSec;                 // starting time in micro-second
-double endTimeInMicroSec;                         // ending time in micro-second
-int stopped;                                      // stop flag
-#if defined(WIN32) || defined(_WIN32)
-  LARGE_INTEGER frequency;   // ticks per second
-  LARGE_INTEGER startCount;  //
-  LARGE_INTEGER endCount;    //
-#else
-  timeval startCount;  //
-  timeval endCount;    //
-#endif
-void start()
-{
-  #if defined(WIN32) || defined(_WIN32)
-    QueryPerformanceCounter(&startCount);
-  #else
-    gettimeofday(&startCount, NULL);
-  #endif
-}
-void end()
-{
-  #if defined(WIN32) || defined(_WIN32)
-    QueryPerformanceCounter(&endCount);
-  #else
-    gettimeofday(&endCount, NULL);
-  #endif
-}
-double getElapsedTimeInMicroSec()
-{
-  #if defined(WIN32) || defined(_WIN32)
-  startTimeInMicroSec = startCount.QuadPart * (1000000.0 / frequency.QuadPart);
-  endTimeInMicroSec = endCount.QuadPart * (1000000.0 / frequency.QuadPart);
-  #else
-  startTimeInMicroSec = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
-  endTimeInMicroSec = (endCount.tv_sec * 1000000.0) + endCount.tv_usec;
-  #endif
-  return endTimeInMicroSec - startTimeInMicroSec;
-}
-#+END_SRC
-
-** Matrix Libraries
-*** Eigen
-只有头文件，使用方便，支持的矩阵运算也非常丰富
-*** Armadillo
-C++下 Matlab 替代品，Matlab 的矩阵操作函数都可以找到对应
-
-* Data structure and Algorithm
-** Graph data structure (<2018-08-28 二>)
-*** 图其实就是一个链表，其节点和边的数据结构定义如下
-    #+BEGIN_SRC C++
-    typedef struct _LINE
-    {
-      int end;
-      int weight;
-      struct _LINE* next;
-    }LINE;
-
-    typedef struct _VECTEX
-    {
-      int start;
-      int number;
-      LINE* neighbor;
-      struct _VECTEX* next;
-    }VECTEX;
-
-    typedef struct _GRAPH
-    {
-      int count;
-      VECTEX* head;
-    }GRAPH;
-    #+END_SRC
-
-** 最短路径算法
-*** Floyd-Warshall
-    #+BEGIN_SRC C++
-    for(k=1;k<=n;k++)
-       for(i=1;i<=n;i++)
-          for(j=1;j<=n;j++)
-            if(e[i][k]<inf && e[k][j]<inf && e[i][j]>e[i][k]+e[k][j])
-                e[i][j]=e[i][k]+e[k][j];
-    #+END_SRC
-
-*** Dijkstra
-    #+BEGIN_SRC C++ -N
-    for(i=1;i<=n-1;i++)
-    {
-      // 找到离1号顶点最近的顶点
-      min = inf;
-      for (j = 1; j <= n; j++)
-      {
-        if (book[j] == 0 && dis[j] < min)
-        {
-          min = dis[j];
-          u = j;
-        }
-      }
-      book[u] = 1;
-      for (v = 1; v <= n; v++)
-      {
-        if (e[u][v] < inf)
-        {
-          if (dis[v] > dis[u] + e[u][v])
-            dis[v] = dis[u] + e[u][v];
-        }
-      }
-    }
-    #+END_SRC
-
-** 用数组实现邻接表
-分别使用 u,v,w,first,next 五个数组保存图的信息,u、v 和 w 三个数组用来记录每条边的具体信息，
-即 u[i]、v[i]和 w[i]表示 第 i 条边是从第 u[i]号顶点到 v[i]号顶点（u[i]->v[i]），且权值为 w[i]
-first[j]的值代表第 j 号顶点所在的其中一条边的编号，next[k]表示第 k 条边连接着第 next[k]条边，且它
-们属于同一个顶点，即在 next 数组中可以递归找到同一个顶点的所有边.
-** 快速排序算法
-核心代码
-#+BEGIN_SRC C++
-void QuickSort(std::vector<T>& data, int s, int e)
-{
-  if (s >= e)
-    return;
-
-  T center = data[s];
-  int i = s;
-  int j = e;
-  while (1)
-  {
-    while (data[j] >= center && i < j)
-    {
-      j--;
-    }
-    while (data[i] <= center && i < j)
-    {
-      i++;
-    }
-    if (i < j)
-    {
-      T temp = data[j];
-      data[j] = data[i];
-      data[i] = temp;
-    }
-    else
-    {
-      data[s] = data[i];
-      data[i] = center;
-      break;
-    }
-  }
-  QuickSort<int>(data, s, i - 1);
-  QuickSort<int>(data, j + 1, e);
-}
-#+END_SRC
-
-** 子符串匹配算法 (<2018-08-31 五>)
-*** KMP
-*** BM
-*** Sunday
-核心代码
-#+BEGIN_SRC C++
-int sunday(const string& tar, const string& src)
-{
-  int idx = 0;
-  size_t len_src = src.length();
-  while (idx + len_src <= tar.length())
-  {
-    for (size_t i = 0; i < len_src; ++i)
-    {
-      if (src[i] != tar[idx + i])
-        break;
-      if (i == len_src - 1)
-        return idx;
-    }
-    for (size_t i = 0; i < len_src; ++i)
-    {
-      if (src[i] == tar[idx + len_src])
-      {
-        idx += len_src - i;
-        break;
-      }
-      if (i == len_src - 1)
-      {
-        idx += len_src + 1;
-      }
-    }
-  }
-  return -1;
-}
-#+END_SRC
+  - [[#配置][配置]]
+- [[#linux--ubuntu][linux & ubuntu]]
+  - [[#u-盘-read-only][U 盘 read-only]]
+  - [[#将-capslock-设为-ctrl][将 CapsLock 设为 Ctrl]]
+  - [[#安装emacs262][安装emacs26.2]]
 
 * Software Tips
 ** pipenv
@@ -361,6 +146,7 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** dired-mode
 - SPC f j 进入dired模式，其实是打开dired buffer
 - M-x dired 选中一个文件夹再回车，进入dired
+#+name: dired keymap
 - 快捷命令
 | 命令    | 作用                                  |
 |---------+---------------------------------------|
@@ -404,13 +190,38 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - (add-hook 'window-setup-hook #'toggle-frame-fullscreen) 全屏
 - (pushnew! initial-frame-alist '(width . 200) '(height . 55)) 设置窗口大小
 - (setq doom-font (font-spec :family "Source Code Pro" :size 15))
-** CMake (<2018-08-31 五>)
+*** cc module
+- pip install cmake-language-server
+- spc h m h 查看cc帮助文档
+** org-mode
+*** 超链接
+#+begin_src emacs-lisp
+[[link][description]]  或者  [[link]]
+要修改,在链接处键入C-c C-l
+#+end_src
+*** 内部链接
+#+begin_src emacs-lisp
+[[#my-custom-id]]
+#+end_src
+*** 插入title
++ 先输入#+,再C-M-i
+*** 参考资料
+[[https://www.cnblogs.com/Open_Source/archive/2011/07/17/2108747.html][org-mode简明指导]]
+
+** cmake (<2018-08-31 五>)
 *** 获取路径
 + ${PROJECT_SOURCE_DIR}
 + ${CMAKE_CURRENT_SOURCE_DIR}
+  - 添加头文件路径 INCLUDE_DIRECTORIES()
 *** 编译指令
- cmake -G "MSYS Makefiles" ..
-** Git (<2018-09-01 六>)
+- cmake -G "MSYS Makefiles" ..
+- 生成compile_commands.json文件: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=NO
+** gcc/g++
+*** 添加头文件路径,多个就写多个-I
+- g++ -I/usr/local/include -I/usr/include
+***
+
+** git (<2018-09-01 六>)
 *** 配置
 **** git config --global push.default simple
 这个配置可以让 GIT 在 PUSH 时，只 PUSH 当前的分支
@@ -450,20 +261,7 @@ git config --global core.safecrlf warn
 *** 中文乱码
 1. sudo apt install libncursesw5 libncursesw5-dev //这个可以避免中文乱码
 2. 重新更新tig再安装
-** Ubuntu (<2018-09-04 二>)
-*** U 盘 read-only
-1) 方法一
-#+BEGIN_SRC shell
-sudo mount -o remount,rw /dev/sdc
-#+END_SRC
-2) 方法二
-#+BEGIN_SRC shell
-sudo umount
-sudo dosfsck -a /dev/sdc
-#+END_SRC
-<<<<<<< HEAD
-- chmod -R 777 targetdir 批量递归修改文件权限
-** Cygwin
+** cygwin
 *** 安装  gcc/g++编译环境
 - cmake
 - make
@@ -474,7 +272,7 @@ sudo dosfsck -a /dev/sdc
 - gcc-g++-core
 *** 指定anaconda路径
 export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/来指定磁盘
-** Vim
+** vim
 *** vim做映射时使用<C-u>做前缀的原因
 其实<C-U>的作用就是在command模式中删除所有的文本
 *** NERD_commenter
@@ -494,20 +292,9 @@ export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/�
 + C-w v 竖向分屏
 + C-w s 横向分屏
 + C-w c 关闭分屏
-* Java
--  Java的 == 运算符比较的是对象（不是基本类型）的引用，而不是对象的值
-
-*** 将 CapsLock 设为 Ctrl
-#+BEGIN_SRC shell
-vim /etc/default/keyboard
-add XKBOPTIONS="ctrl:swapcaps" or XKBOPTIONS="ctrl:nocaps"
-run sudo dpkg-reconfigure keyboard-configuration
-#+END_SRC
-
-*** 安装emacs26.2
-- sudo add-apt-repository ppa:kelleyk/emacs
-- sudo apt update
-- sudo apt install emacs26
+** pycharm
+*** Tips
+- 按tab会覆盖后面的内容，enter则是补全代码不覆盖
 * windows
 ** 终端
 先安装了 cygwin
@@ -521,3 +308,31 @@ oh-my-zsh 的主题，特殊符号不能显示-->又去解决字体问题，下�
 把 git for windows 中的 bash,minsys 复制到 cygwin 中，并不能直接运行
 zsh 中 git log 显示中文乱码，在 zshrc 中设置 export LESSCHARSET=UTF-8
 另一个 windows 体验 linux 的工具 babun, 准备尝试
+** 配置
+1. 笔记本电脑关闭自带键盘
+   - config i8042prt start= disabled
+   - config i8042prt start= auto
+* linux & ubuntu
+** U 盘 read-only
+1) 方法一
+#+BEGIN_SRC shell
+sudo mount -o remount,rw /dev/sdc
+#+END_SRC
+2) 方法二
+#+BEGIN_SRC shell
+sudo umount
+sudo dosfsck -a /dev/sdc
+#+END_SRC
+<<<<<<< HEAD
+- chmod -R 777 targetdir 批量递归修改文件权限
+** 将 CapsLock 设为 Ctrl
+#+BEGIN_SRC shell
+vim /etc/default/keyboard
+add XKBOPTIONS="ctrl:swapcaps" or XKBOPTIONS="ctrl:nocaps"
+run sudo dpkg-reconfigure keyboard-configuration
+#+END_SRC
+
+** 安装emacs26.2
+- sudo add-apt-repository ppa:kelleyk/emacs
+- sudo apt update
+- sudo apt install emacs26

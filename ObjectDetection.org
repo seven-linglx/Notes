@@ -1,0 +1,45 @@
+#+TITLE: Object Detection
+#+INDENT: STARTUP
+#+AUTHOR: lingluxiang
+#+DATA: <2021-07-18>
+
+* 目标检测概述(知乎lighthouse)
+** ResNet
+1) ResNet解决深度网络梯度回传消失
+2) 增加所有牲征图的表达能力
+** FPN
+1) 将不同大小的特征图进行融合
+** RetinaNet
+1) FocalLoss
+** 感受野对于检测网络的意义
+1) 分类网络性能提升带动检测网络性能提升
+2) 输出层feature map里每个点对应一个类别标签,feature map里每个点是原图的一个区域(可以看成是原图的一个子图)
+3) 目标检测网络本质训练一个分类网络,框的回归当成了附带的事情
+** Tips
+1) top-down下采样(max pooling)
+2) down-top 上采样(反卷积)
+3) 检测网络中，习惯性地将整体网络结构划分为三个部分：backbone --> neck --> head
+4) backbone:为目标检测提供若干种感受野大小和中心步长的组合,以满足对不同尺度和类别的目标检测
+5) neck: 特征融合,典型代表FPN,也有可能不是[[https://arxiv.org/abs/2103.09460][You Only Look One-level Feature]]
+*** head
+1) 分类\回归\Quality
+2) Quality有centerness和iou score评论方式
+* 目标分割(知乎lighthouse)
+1) 分割网络的设计重点是如何更加高效地耦合更多尺寸感受野的特征
+* Anchor-based & Anchor-free(知乎lighthouse)
+1) 基于一个point,Anchor-based事先画好几个固定的框,回归是基于此.Anchor-free不事先标记框,直接都这个点回归boundingbox
+2) Anchor-based超参数多些,复杂度高,bbox回归相对简单下,一个point可以回归多个bbox
+3) Anchor-free几乎没有超参数,复杂度低,一个point回归一个bbox.
+4) CenterNet、CornerNet这类的方法不是基于point的，是预测框的角，然后再用后处理把相关的角联系起来。
+* 感受野(知乎lighthouse)
+1) 深度卷积神经网络中,每个神经元对应输入图像的某个确定区域,仅该区域对神经元激活起作用,这个区域叫这个神经元的感受野.
+2) 有效感受野目前没有量化方式,只是一种现象
+3) 感觉野做为anchor没有意义,有效感受野倒可以
+4) 感受野的尺寸可能比原图大
+* feature map
+1) out = ((input_size + 2 * padding - kernel_size) / stride) + 1 [[https://zhuanlan.zhihu.com/p/29119239][(CNN中卷积层的计算细节]])
+2) feature map里每个点是原图的一个区域(感受野)的中心
+3) 最后一层feature map,有可能有多个点都能对应回原图里目标物
+4) 一个point对应一个目标,怎么处理遮挡或重叠?
+* 参考
+1) A Guide to Convolution Arithmetic for Deep Learning

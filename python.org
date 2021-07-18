@@ -3,7 +3,12 @@
 ** strip(rm)  
    删除rm字符，没有则删除空白、/r /n等
 ** max(arg1, arg2, *args[, key]) 
-   本函数是迭代对象iterable进行比较，找出最大值返回。当key参数不为空时，就以key的函数对象为判断的标准
+- 本函数是迭代对象iterable进行比较，找出最大值返回。当key参数不为空时，就以key的函数对象为判断的标准
+- 获取list或str中的高频值
+  #+BEGIN_SRC python
+  a = [1, 1, 2]
+  max(set(a), key=a.count)  # 1
+  #+END_SRC
 ** list.count
    统计list里元素的个数
 ** isinstance(object,classinfo) 
@@ -18,6 +23,29 @@
   end = pc()
   print(end - start) # seconds
   #+end_src
+** dataclass
+- python3.7引入数据类功能，有数据类型提示，有__repr__可以直接打印，有__eq__可以直接对比，使用.操作
+    #+BEGIN_SRC python
+    @dataclass
+    class Card:
+        rank: str
+        suit: str
+    #+END_SRC
+** dict合并
+- python3.5之后,可以直接合并，有重复的key，后面的覆盖前面的
+    #+BEGIN_SRC python
+    merged = {**dict1, **dict2}
+    #+END_SRC
+** str
+- title把字符串每个单词的首字母变大写
+- count统计字符串中某个子串或字符的个数
+** map
+- 输入一个执行函数和一个可迭代参数，可替换一些for循环操作
+** python shell
+- _可以获取上一条命令的输出
+- Out[n]可以获取某条命令的输出
+** python 命令
+- -m参数，将模块以脚本方式运行，当不知道文件的绝对路径时，可使用
 * Python Module
 ** subprocess
    #+BEGIN_SRC python

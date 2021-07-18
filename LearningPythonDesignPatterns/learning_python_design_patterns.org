@@ -1,0 +1,66 @@
+#+TITLE: learning python design patterns
+#+STARTUP: indent
+#+STARTUP: content
+
+* 第二章 The Singleton Desing Pattern
+** 一个类多次实例化，只能得到同一个实例
+** 一个类实例化得到多个实例，但每个实例的内部状态都一样，也就是python object里的__dict__都一样
+** 使用metaclass来实现单例模式
+#+BEGIN_SRC python
+class MetaSingleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+    if cls not in cls._instances:
+        cls._instances[cls] = super(MetaSingleton, cls).__call__(*args, **kwargs)
+    return cls._instances[cls]
+
+class Logger(metaclass=MetaSingleton):
+    pass
+
+logger1 = Logger()
+logger2 = Logger()
+print(logger1, logger2)
+#+END_SRC
+** 应用案例
+*** 数据库连接，实例化多个数据库封装类，但只会拿到同一个实例，保证了数据库操作一致性
+#+BEGIN_SRC python
+import sqlite3
+class MetaSingleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(MetaSingleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Database(metaclass=MetaSingleton):
+    connection = None
+    def connect(self):
+        if self.connection is None:
+            self.connection = sqlite3.connect("db.sqlite3")
+            self.cursorobj = self.connection.cursor()
+        return self.cursorobj
+
+db1 = Database().connect()
+db2 = Database().connect()
+#+END_SRC
+*** 框架健康检查服务：检查列表可以在其它地方修改，前端检查服务需要同步更新检查列表
+** Drawbacks(缺点)
+- global variables be changed by mistake
+- 多个类共享同一份全局变量，会造成紧密耦合
+* 第三章 The Facktory Pattern
+** Simple Factory Pattern(单例工厂模式)
+#+begin_src python
+## forest factory defined
+class ForestFactory(object):
+    def make_sound(self, object_type):
+        return eval(object_type)().do_say()
+#+end_src
+** Factory Method Pattern(工厂方法模式)
+- 创建一个产品
+** Abstract Factory Pattern(抽象工厂模式)
+- 创建一族产品
+* 第四章 The Facade Pattern
+** 新建一个client给外部调用，由其访问内部多个方法，获取最后的结果
+* 第五章 The Proxy Pattern
+** Proxy如名字一样，是client与RealObject之间的桥梁
+- Proxy与RealObject有相同的一个接口，都有一个共同抽象接口

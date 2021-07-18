@@ -1,0 +1,76 @@
+#+TITLE: Cpp
+:PROPERTIES:
+:Author lingluxiang
+:END:
+
+* C&C++
+** 基本概念
+- |= 是按位或并赋值的意思，a|=b就是a=a|b
+- clang-tidy is a clang-based C++ “linter” tool
+** lambda 语法（<2018-08-28 二>）
+  #+BEGIN_SRC C++
+  [captures] (parameter list) -> return-type
+  {
+    lambda body;
+  }
+  #+END_SRC
+  其中 captures 中要么按值获取，要么按引用获取。
+  If you reference capture a const local variable, it becomes a const reference in the lambda.
+
+** std::vector (<2018-08-28 二>)
+- vector.capacity() 表示容量大小，占用多少内存
+- vector.size() 表示元素大小，占用实际内存
+- vector.max_size() 最大容量
+- 当前 v.capacity()=c,v.size()=s;如果 s=c+1，那么 c 就会加倍
+
+** Timer(micro-second) (<2018-09-04 二>)
+#+BEGIN_SRC c++
+double startTimeInMicroSec;                 // starting time in micro-second
+double endTimeInMicroSec;                         // ending time in micro-second
+int stopped;                                      // stop flag
+#if defined(WIN32) || defined(_WIN32)
+  LARGE_INTEGER frequency;   // ticks per second
+  LARGE_INTEGER startCount;  //
+  LARGE_INTEGER endCount;    //
+#else
+  timeval startCount;  //
+  timeval endCount;    //
+#endif
+void start()
+{
+  #if defined(WIN32) || defined(_WIN32)
+    QueryPerformanceCounter(&startCount);
+  #else
+    gettimeofday(&startCount, NULL);
+  #endif
+}
+void end()
+{
+  #if defined(WIN32) || defined(_WIN32)
+    QueryPerformanceCounter(&endCount);
+  #else
+    gettimeofday(&endCount, NULL);
+  #endif
+}
+double getElapsedTimeInMicroSec()
+{
+  #if defined(WIN32) || defined(_WIN32)
+  startTimeInMicroSec = startCount.QuadPart * (1000000.0 / frequency.QuadPart);
+  endTimeInMicroSec = endCount.QuadPart * (1000000.0 / frequency.QuadPart);
+  #else
+  startTimeInMicroSec = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
+  endTimeInMicroSec = (endCount.tv_sec * 1000000.0) + endCount.tv_usec;
+  #endif
+  return endTimeInMicroSec - startTimeInMicroSec;
+}
+#+END_SRC
+
+** Matrix Libraries
+*** Eigen
+只有头文件，使用方便，支持的矩阵运算也非常丰富
+*** Armadillo
+C++下 Matlab 替代品，Matlab 的矩阵操作函数都可以找到对应
+** protobuf
+*** 编译
+- protoc -I=$SRC_DIR --cpp_out=$DST_DIR $SRC_DIR/conf.proto ==> prtoc conf.proto --cpp_out=./
+- g++ -o main.exe main.cc conf.pb.cc `pkg-config --cflags --libs protobuf`

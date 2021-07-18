@@ -1,0 +1,117 @@
+#+TITLE: moderncpp
+#+OPTIONS: toc:2
+
+* 第二章 语言可用性的强化
+** nullptr
+** constexpr
+** if/switch语法里可以定义变量
+** 有tuple类型，std::tuple<int, string, float>
+** 结构化绑定
+- 可直接做右值对tuple进行拆包
+  #+BEGIN_SRC cpp
+  auto [x, y, z] = std:make_tuple(1, 2.5, "string");
+  #+END_SRC
+** auto 和 decltype 这两个关键字实现了类型推导
+- auto 不能用于函数中传参
+- auto 还不能用于推导数组类型
+- decltype可用于推导表达式的类型
+#+begin_src cpp
+auto x = 1;
+auto y = 2;
+decltype(x + y) z;
+#+end_src
+- std::is_same<T, U> 判断T和U是否为同一类型
+#+begin_src cpp
+auto x = 1;
+if (std::is_same<decltype(x), int>::value)
+  std::cout << "x == int" << std::endl;
+
+// C11, 模板可以指定默认类型
+template<typename T = int, typename U = int>
+auto add(T x, U y) -> decltype(x + y) {
+  return x + y;
+}
+// C14
+template<typename T, typename U>
+auto add(T x, U y){
+  return x + y;
+}
+#+end_src
+- std::is_integral<T>::value
+#+begin_src cpp
+template<typename T>
+auto print_type_info(const T& t) {
+// 在编译时就决定了走哪个分支
+if constexpr (std::is_integral<T>::value) {
+    return t + 1;
+} else {
+    return t + 0.001;
+}
+}
+#+end_src
+** 模板是用于产生类型的，使用using给模板定义一个别另
+** override/final
+- override显示指明重载
+- final防止类被继续继承以及终止虚函数继续重载
+
+* 第三章 语言运行期的强化
+** lambda表达式
+- 提供一个匿名函数特性
+- 参数类型可以定义为auto，以此来实现泛型
+** 函数对象包装器
+- std::function 函数的容器，将函数、函数指针作为对象进行处理
+- std::bind 绑定函数调用的参数
+- std::placeholder 对函数的某个参数进行占位
+  #+BEGIN_SRC cpp
+    int main() {
+        // 将参数 1,2 绑定到函数 foo 上，但是使用 std::placeholders::_1 来对第一个参数进行占位
+        auto bindFoo = std::bind(foo, std::placeholders::_1, 1,2);
+        // 这时调用 bindFoo 时，只需要提供第一个参数即可
+        bindFoo(1);
+    }
+  #+END_SRC
+** 右值引用（没有搞懂）
+- 解决[移动]和[拷贝]之间的区别
+* 第四章 容器
+** 线性容器 std:array
+- 更加‘现代化’，封装了一些方便的操作函数
+- 大小恒定
+#+begin_src cpp
+constexpr size_t length = 4;
+std::array<size_t, length> arr = {0, 1, 2, 3};
+#+end_src
+** 元组std::tuple
+- 基本函数std::make_tuple, std::get, std::tie
+- 元组合并std::tuple_cat
+* 第五章 智能指针与内存管理
+** std::shared_ptr & std::make_shared
+** std::unique_ptr
+** std::weak_ptr
+* 第六章 正则表达式
+** std::regex
+* 第七章 并行与并发
+** std::mutex
+- 使用std::lock_guard于临界区的互斥量的创建只需要在作用域的开始部分
+  #+BEGIN_SRC cpp
+    void critical_section(int change_v) {
+        static std::mutex mtx;
+        std::lock_guard<std::mutex> lock(mtx);
+        // 执行竞争操作
+        v = change_v;
+        // 离开此作用域后 mtx 会被释放
+    }
+  #+END_SRC
+- std::unique_lock
+** std::future
+** 原子操作和内存模型(没看懂)
+* 第八章 文件系统
+** 待补充
+* 第九章 其它
+** long long int 64位
+** noexcept修饰符，修饰函数表示函数一定不会抛出异常
+- 能够阻止异常的扩散传播，有效的让编译器最大限度的优化我们的代码。
+** 字面量
+- 原始字符串字面量
+  #+BEGIN_SRC cpp
+    std::string str = R"(C:\File\To\Path)";
+  #+END_SRC
