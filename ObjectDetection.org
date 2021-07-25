@@ -9,6 +9,7 @@
 2) 增加所有牲征图的表达能力
 ** FPN
 1) 将不同大小的特征图进行融合
+2) feature pyramid network
 ** RetinaNet
 1) FocalLoss
 ** 感受野对于检测网络的意义
@@ -41,5 +42,40 @@
 2) feature map里每个点是原图的一个区域(感受野)的中心
 3) 最后一层feature map,有可能有多个点都能对应回原图里目标物
 4) 一个point对应一个目标,怎么处理遮挡或重叠?
+* Anchor原理(bilibili)
+** label assignment 准备训练数据
+- 把目标分配给某个Anchor
+- 目标与Anchor计算IoU,取最大的
+** 存在的地方
+- 分类目标匹配
+- Target回归
+** anchor(锚点) box/point
+- FCOS anchor free : 图大稀疏
+- RetinaNet anchor based : 图小密集
+* Anchor详解
+** 概述
+1) Anchor box通常是以CNN提取到的Feature Map 的点为中心位置，生成边框，所以一个Anchor box不需要指定中
+  心位置
+2) Anchor Box的生成是以CNN网络最后生成的Feature Map上的点为中心的（映射回原图的坐标), 降采样16倍, 最
+  后一层feature map上的点对应原图16x16的区域
+3) 使用scale(尺度)和ratio(长宽比)来描述,scale在基础尺寸上的缩放倍数
+4) 注意scale的参照物,相对最后FeatureMap,还是相对原图
+5) 坐标归一化:(x/w, y/h)(w=h)来表示点
+6) faster-rcnn anchor计算源码:[[https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py][faster-rcnn]]
+7) [[https://blog.csdn.net/hust_lmj/article/details/80152850][faster-rcnn anchor源码解析]]
+** 中心
+1) Feature map上(0,0)点，对应原图的(0,0,15,15)(左上角坐标，右下角坐标)，该点生成Anchor box的中心点就
+  是原图的(7.5,7.5), Feature Map上其余位置在原图对应的中心点在此基础上进行平移即可得到。例如Feature
+  Map上(0,0)的点在原图上对应区域的的中心点为(7.5,7.5),则(0,1)对应的中心点为(7.5,7.5 + 16)
+** 长宽
+1) width = scale * base_size / sqrt(ratio) # base_size = 16(faster-rcnn), 一个point对应的感受野边长
+2) length = scale * base_size * sqrt(ratio) # ratio = length / width, scale = 8, 16, 32(faster-rcnn)
+* 动态样本划分(bilibili)
+** 静态Anchor匹配机制弊端
+- 小目标: 漏检, 解决: 1) anchor大小聚类得出, 2) feature map
+- 大目标: 误检
+** 动态样本划分
+- IoU的阈值使用统计量,所有与这个样本相关的Anchor求的IoU的mean + std
+- PAPER: ATSS(Adaptive Training Sample Selection), PAA
 * 参考
 1) A Guide to Convolution Arithmetic for Deep Learning

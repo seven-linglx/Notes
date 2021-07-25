@@ -190,6 +190,17 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - (add-hook 'window-setup-hook #'toggle-frame-fullscreen) 全屏
 - (pushnew! initial-frame-alist '(width . 200) '(height . 55)) 设置窗口大小
 - (setq doom-font (font-spec :family "Source Code Pro" :size 15))
+*** EMACS字体设置
+#+begin_src elisp
+(defun set-font (english chinese english-size chinese-size)
+  (set-face-attribute 'default nil :font
+                      (format   "%s:pixelsize=%d"  english english-size))
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset
+                      (font-spec :family chinese :size chinese-size))))
+
+(set-font "Source Code Pro for Powerline" "simsun" 14 14)
+#+end_src
 *** cc module
 - pip install cmake-language-server
 - spc h m h 查看cc帮助文档
