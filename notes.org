@@ -1,11 +1,11 @@
 #+TITLE: 技术笔记
-#+INDENT: STARTUP
+#+STARTUP: INDENT
 
 * Table of Contents :TOC_2_gh:noexport:
 - [[#software-tips][Software Tips]]
   - [[#pipenv][pipenv]]
-  - [[#spacemacs-2018-08-28-二][spacemacs (<2018-08-28 二>)]]
-  - [[#doom-emacs][doom-emacs]]
+  - [[#pip][pip]]
+  - [[#spacemacsdoom-emacs-2018-08-28-二][spacemacs/doom emacs (<2018-08-28 二>)]]
   - [[#org-mode][org-mode]]
   - [[#cmake-2018-08-31-五][cmake (<2018-08-31 五>)]]
   - [[#gccg][gcc/g++]]
@@ -50,7 +50,9 @@
 - pipenv --py 打印当前项目使用的python信息
 - pipenv graph 打印依赖树图
 - pipenv install -r requirements.txt
-** spacemacs (<2018-08-28 二>)
+** pip
++ windows位置%appdata%
+** spacemacs/doom emacs (<2018-08-28 二>)
 *** 按键说明
  1) 功能键
     + C-  意思是按住  Ctrol 键
@@ -63,46 +65,7 @@
     + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta
 *** 查看变量的命令
 - 查看变量的值（c-h v），快捷键对应的函数(c-h k)，方便查找函数(c-h f)
-*** ORG快捷键
-1) Input(org-insert-structure-template)
-   + s    #+begin_src ... #+end_src
-2) 功能键
-   + C-  意思是按住 Ctrol 键
-   + M-   意指 Meta 键 (键盘上若无 Meta 键，则可以 ALT ESC 键来取而代之)
-   + DEL  意指退格键 (不是 删除(Delete) key)
-   + RET  意指回车键
-   + SPC  意指空格键
-   + ESC  意指 Escape 键
-   + TAB  意指 Tab 键
-   + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住 Control 和 Meta 
- 
-*** ORG 
-1) Input
-   + s    #+begin_src ... #+end_src 
-   + e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
-   + q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
-   + v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
-   + c    #+begin_center ... #+end_center
-   + l    #+begin_latex ... #+end_latex
-   + L    #+latex:
-   + h    #+begin_html ... #+end_html
-   + H    #+html:
-   + a    #+begin_ascii ... #+end_ascii
-   + A    #+ascii:
-   + i    #+index: line
-   + I    #+include: line
-   上面的单字母为快捷键字母，如输入一个< s 然后  TAB 后就变为"#+BEGIN_SRC #+END_SRC"，也就是命令  org-insert-structure-template
-2) Move
-   + gh  outline-up-heading
-   + gj  org-forward-heading-same-level
-   + gl  outline-next-visible-heading
-   + gk  org-backward-heading-same-level
-   + M-l	org-metaright
-   + M-h	org-metaleft
-   + M-k	org-metaup
-   + M-j	org-metadown
-
-*** org 中英文对齐
+*** org中英文对齐
 首先设中文字体，添加如下配置
 #+begin_src elisp
 ;;单独设置中文字体，解决有中文是卡顿现象
@@ -111,27 +74,6 @@
                     (font-spec :family "微软雅黑" :size 16)))
 #+end_src
 然后使用  SPC z x 来调整字体大小，发现  org-table 里对齐为此
-*** org 输入特殊字符
-- 输入下划线用  underlined\under == underlined_
-- 输入加号用 \plus{}< == +<
-- 输入周长公式 \pi{}d
-- 中文和英文之间多了空格，可能是因为pangu-space-mode的原因，关掉它就可以了。主要是因为安装了chinese这个layer，把它删除
-*** org-mode自动换行
-参考：https://emacs-china.org/t/emacs-org-mode/6748/4
-关于auto-fill mode:
-用 M-x auto-fill-mode 打开 auto-fill mode；
-用 M-q 重排段落的每行字数；
-用 C-u 80 C-x f 设定每行80字，再在需要重排的地方按 M-q 更新。
-
-关于org的自动缩进：
-org确实会在一些地方默认进行缩进，例如代码块。
-如果打开了 org-indent-mode 也是会按照大纲逐级缩进。
-Emacs的自动缩进也有可能造成你说的现象，检查一下 electric-indent-mode， newline-and-indent 之类的设置。
-
-关于日志换行的选择：
-对于写日志这种会频繁出现长段落的情况，除了用 auto-fill mode 进行 hard linewrap （是翻译成硬换行吗），还可以用soft linewrap的方案 （根据窗口大小自动调整每行显示的字数）。
-我记得，如果有 setq truncate-lines nil ， org就自动显示换行了，做到soft linewrap的效果。
-当然，Emacs有更友好的 visual-line-mode ，是写英语论文的必备。
 *** clang-format-region
 With this integration you can press the bound key and clang-format
 will format the current line in NORMAL and INSERT mode or the selected
@@ -140,9 +82,6 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - (setq projectile-indexing-method 'native)
 - (spacemacs/set-leader-keys "pf" 'counsel-projectile-find-file)
 - 在查找文件时直接输入' C:/'，可以直接切换磁盘目录
-*** org 文件内添加目录（内部链接）
-直接在目录的地方输入: TOC:或者: TOC_2_gh:或者: TOC_2_gh:noexport:
-[[https://github.com/snosov1/toc-org][org-toc]]
 *** dired-mode
 - SPC f j 进入dired模式，其实是打开dired buffer
 - M-x dired 选中一个文件夹再回车，进入dired
@@ -167,7 +106,9 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 | v       | 预览文件，q退出预览                   |
 
 *** doom-modeline
-这个  modeline 依赖  all-the-icons 里的字体，从a ll-the-icons 仓库  clone 下来，windows 要手动安装。其它可以在  emacs 里直接使用  all-the-icons-font-install 安装.
+这个modeline依赖all-the-icons里的字体，从all-the-icons 仓库 clone 下来，windows 要手动安装。其
+它可以在 emacs 里直接使用 all-the-icons-font-install 安装.
+*** set-face-underline
 *** 一些有用命令
 + SPC t i 显示代码缩进线
 *** 按键映射
@@ -184,7 +125,6 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** 国内源
 - 腾讯源 https://mirrors.cloud.tencent.com/help/elpa.html
 - 去除spacemacs默认设置的函数、变量名加粗: 鼠标移到想改的地方，M-x customize-face
-** doom-emacs
 *** settings
 - (add-hook 'window-setup-hook #'toggle-frame-maximized) 最大化
 - (add-hook 'window-setup-hook #'toggle-frame-fullscreen) 全屏
@@ -218,7 +158,51 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 + 先输入#+,再C-M-i
 *** 参考资料
 [[https://www.cnblogs.com/Open_Source/archive/2011/07/17/2108747.html][org-mode简明指导]]
-
+*** 显示图片
+#+begin_src elisp
+[[file:path/to/png]]
+C-c C-x C-v
+在图片链接上ENTER
+#+end_src
+*** 自动换行
+[[https://emacs-china.org/t/emacs-org-mode/6748/4][参考]]
++ M-x auto-fill-mode ;; (hard linewrap)
++ M-q fill paragraph
++ C-u 80 C-x f 设定每行80字,按M-q更新
++ setq truncate-lines nil ;; org就自动显示换行soft linewrap的效果
++ visual-line-mode
+*** 文件内添加目录(内部链接)
++ 直接在目录的地方输入: TOC:或者: TOC_2_gh:或者: TOC_2_gh:noexport:
+[[https://github.com/snosov1/toc-org][参考链接:org-toc]]
+*** 输入特殊字符
+- 输入下划线用  underlined\under == underlined_
+- 输入加号用 \plus{}< == +<
+- 输入周长公式 \pi{}d
+- 中文和英文之间多了空格，可能是因为pangu-space-mode的原因，关掉它就可以了。主要是因为安装了chinese这个layer，把它删除
+*** 快捷键
+**** Input(org-insert-structure-template)
++ s    #+begin_src ... #+end_src
++ e    #+begin_example ... #+end_example  : 单行的例子以冒号开头
++ q    #+begin_quote ... #+end_quote      通常用于引用，与默认格式相比左右都会留出缩进
++ v    #+begin_verse ... #+end_verse      默认内容不换行，需要留出空行才能换行
++ c    #+begin_center ... #+end_center
++ l    #+begin_latex ... #+end_latex
++ L    #+latex:
++ h    #+begin_html ... #+end_html
++ H    #+html:
++ a    #+begin_ascii ... #+end_ascii
++ A    #+ascii:
++ i    #+index: line
++ I    #+include: line
+**** Move
++ gh  outline-up-heading
++ gj  org-forward-heading-same-level
++ gl  outline-next-visible-heading
++ gk  org-backward-heading-same-level
++ M-l org-metaright
++ M-h org-metaleft
++ M-k org-metaup
++ M-j org-metadown
 ** cmake (<2018-08-31 五>)
 *** 获取路径
 + ${PROJECT_SOURCE_DIR}
@@ -321,8 +305,8 @@ zsh 中 git log 显示中文乱码，在 zshrc 中设置 export LESSCHARSET=UTF-
 另一个 windows 体验 linux 的工具 babun, 准备尝试
 ** 配置
 1. 笔记本电脑关闭自带键盘
-   - config i8042prt start= disabled
-   - config i8042prt start= auto
+   - sc config i8042prt start= disabled
+   - sc config i8042prt start= auto
 * linux & ubuntu
 ** U 盘 read-only
 1) 方法一
