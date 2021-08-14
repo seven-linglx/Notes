@@ -1,5 +1,5 @@
 #+TITLE: Object Detection
-#+STARTUP: show1levels
+#+STARTUP: show2levels
 #+STARTUP: INDENT
 #+AUTHOR: lingluxiang
 #+DATA: <2021-07-18>
@@ -85,6 +85,20 @@
 ** 长宽
 1) width = scale * base_size / sqrt(ratio) # base_size = 16(faster-rcnn), 一个point对应的感受野边长
 2) length = scale * base_size * sqrt(ratio) # ratio = length / width, scale = 8, 16, 32(faster-rcnn)
+* label assignment
++ 前景分配cls_loss和reg_loss
++ 背景只分配cls_loss
++ 基于IoU的正负样本划分
+  #+begin_quote
+  满足以下条件的Anchor是正样本：
+  与Ground Truth Box的IOU(Intersection-Over-Union) 的重叠区域最大的Anchor；
+  与Gound Truth Box的IOU的重叠区域>0.7;
+
+  满足以下条件的Anchor是负样本：
+  与Gound Truth Box的IOU的重叠区域 <0.3;
+  既不属于正样本又不属于负样本的Anchor不参与训练。
+  #+end_quote
+
 * 动态样本划分(bilibili)
 ** 静态Anchor匹配机制弊端
 - 小目标: 漏检, 解决: 1) anchor大小聚类得出, 2) feature map
@@ -98,10 +112,22 @@
 + 输入尺寸变化: P*N*D(30000 x 20 x 9)->P*N*C(30000 x 20 x 64)-> P*C(30000*64)->H*W*C(512*512*64),这
   里的H,W就是上面PointCloud的尺寸
 ** backbone
-+ backbone网络结构,不是FPN结构,因为没有融合feature mpa,和SSD采用方式类似
-  [[file:images/pointpillars.backbone.png]]
-+ 三个Block(每个尺寸减少一倍,通道增加一倍),再接三个上采样(反卷积上采样),最后Concat
++ backbone网络结构,不是FPN结构,因为没有融合feature mpa,和SSD采用方式类似(FCN style)
+[[file:images/pointpillars.backbone.png]]
++ 三个Block(每个尺寸减少一倍,通道增加一倍)
+** neck
++ backbone里每个block的输出接一个上采样(反卷积),使得neck的输出有相同的尺寸与通道,最后三层一起Concat
 ** head
-+ backbone最后一层feature map里每个点接出6个head做不同的预测(类别,Anchor位置,Anchor尺寸...),此做法和RPN一样,属于Anchor-Based
++ backbone最后一层feature map里每个点接出6个head做不同的预测(类别,Anchor位置,Anchor尺寸...),此做法和
+  RPN一样,属于Anchor-Based
+** loss
++ [[https://zhuanlan.zhihu.com/p/102994173][参考链接]]
++ reg_loss, cls_loss, dir_loss组成
+[[file:images/pointpillarsloss.svg]]
++ res_loss
+[[file:images/pointpillarslocloss.jpg]]
++ cls_loss使用focal loss,能调节正负样本不均衡\难易样本不均衡的分类训练
+[[file:images/pointpillarsclsloss.jpg]]
+[[file:images/focalloss.jpg]]
 * 参考
 1) A Guide to Convolution Arithmetic for Deep Learning
