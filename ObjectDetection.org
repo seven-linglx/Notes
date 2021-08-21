@@ -4,7 +4,7 @@
 #+AUTHOR: lingluxiang
 #+DATA: <2021-07-18>
 
-* 目标检测概述(知乎lighthouse)
+* 目标检测概述
 ** ResNet
 1) ResNet解决深度网络梯度回传消失
 2) 增加所有牲征图的表达能力
@@ -27,6 +27,8 @@
 1) 分类网络性能提升带动检测网络性能提升
 2) 输出层feature map里每个点对应一个类别标签,feature map里每个点是原图的一个区域(可以看成是原图的一个子图)
 3) 目标检测网络本质训练一个分类网络,框的回归当成了附带的事情
+** loss
++ https://blog.csdn.net/lt1103725556/article/details/115128523
 ** Tips
 1) top-down下采样(max pooling)
 2) down-top上采样(反卷积)
@@ -54,9 +56,10 @@
 4) 感受野的尺寸可能比原图大
 * feature map
 1) out = ((input_size + 2 * padding - kernel_size) / stride) + 1 [[https://zhuanlan.zhihu.com/p/29119239][(CNN中卷积层的计算细节]])
-2) feature map里每个点是原图的一个区域(感受野)的中心
-3) 最后一层feature map,有可能有多个点都能对应回原图里目标物
-4) 一个point对应一个目标,怎么处理遮挡或重叠?
+2) 卷积层向下取整,池化层向上取整
+3) feature map里每个点是原图的一个区域(感受野)的中心
+4) 最后一层feature map,有可能有多个点都能对应回原图里目标物
+5) 一个point对应一个目标,怎么处理遮挡或重叠?
 * Anchor原理(bilibili)
 ** label assignment 准备训练数据
 - 把目标分配给某个Anchor
@@ -123,11 +126,17 @@
 ** loss
 + [[https://zhuanlan.zhihu.com/p/102994173][参考链接]]
 + reg_loss, cls_loss, dir_loss组成
++ 区分正负样本,用所有的样本计算cls_loss,再用正样本计算reg_loss,一般分类与回归是不同的HEAD,对应的loss
+  只训练对应的HEAD
 [[file:images/pointpillarsloss.svg]]
 + res_loss
 [[file:images/pointpillarslocloss.jpg]]
 + cls_loss使用focal loss,能调节正负样本不均衡\难易样本不均衡的分类训练
 [[file:images/pointpillarsclsloss.jpg]]
 [[file:images/focalloss.jpg]]
+* SSD
+** pytorch版本代码
++ https://github.com/amdegroot/ssd.pytorch/issues
++ https://github.com/lufficc/SSD
 * 参考
 1) A Guide to Convolution Arithmetic for Deep Learning
