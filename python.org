@@ -1,16 +1,26 @@
 #+TITLE: Python
+#+STARTUP: INDENT
 * Python一些函数用法
-** strip(rm)  
-   删除rm字符，没有则删除空白、/r /n等
-** max(arg1, arg2, *args[, key]) 
+** max(arg1, arg2, *args[, key])
 - 本函数是迭代对象iterable进行比较，找出最大值返回。当key参数不为空时，就以key的函数对象为判断的标准
 - 获取list或str中的高频值
   #+BEGIN_SRC python
   a = [1, 1, 2]
   max(set(a), key=a.count)  # 1
   #+END_SRC
-** list.count
-   统计list里元素的个数
+** list
++ count统计list里元素的个数
++ index
++ 去重,同时保留顺序
+#+begin_src python
+ids = [1, 4, 3, 4]
+new_ids = list(set(ids))
+nes_ids.sort(key=ids.index)
+#+end_src
+** set
++ |, &, -, ^
+** tuple
++ 单个元素要写成(1,)
 ** isinstance(object,classinfo) 
    判断变量是否是这个类型
 ** type(p)
@@ -31,21 +41,40 @@
         rank: str
         suit: str
     #+END_SRC
-** dict合并
+** dict
 - python3.5之后,可以直接合并，有重复的key，后面的覆盖前面的
-    #+BEGIN_SRC python
+  #+BEGIN_SRC python
     merged = {**dict1, **dict2}
-    #+END_SRC
+  #+END_SRC
+- update
+- 两个list生成dict
+#+begin_src python
+dict_out = dict(zip(keys_list, values_list))
+#+end_src
 ** str
 - title把字符串每个单词的首字母变大写
 - count统计字符串中某个子串或字符的个数
+- str.startwith(substr, begin, end)
+- string.punctuation输出英文标点符号
+- strip(rm) 删除rm字符两边的空白字符,没有则删除/r /n等
 ** map
 - 输入一个执行函数和一个可迭代参数，可替换一些for循环操作
+- Python3返回迭代器
+** os.scandir
++ python3.5后,os.walk是使用os.scandir实现,速度更快
 ** python shell
 - _可以获取上一条命令的输出
 - Out[n]可以获取某条命令的输出
 ** python 命令
 - -m参数，将模块以脚本方式运行，当不知道文件的绝对路径时，可使用
+** zip, izip, izip_longest
++ 把多个序列或迭代器组合成元组,返回列表
++ izip是返回迭代器
+** *argc, **kargc
++ 形成元组和字典
+**
+** Tips
++ python -m json.tool json.txt
 * Python Module
 ** subprocess
    #+BEGIN_SRC python
@@ -55,4 +84,77 @@
      os.popen('python /home/linglx/PycharmProjects/gui/show_poles.py ' + str(i))
    #+END_SRC
 ** numpy
- 
+- flatten 返回源数据副本
+- squeeze
+- reshape(-1)
+*** axis
+- 0代表沿着第一个轴(X),对每列操作
+- 1代表沿着第二个轴(Y),对每行操作
+*** save&load
+- np.loadtxt()
+- np.savetxt
+** pandas
+- DataFrame(dict_fack)
+- DataFrame(list(dict_fack.item()), columns=["id", "chars"])
+- df.series.sample(frac)
+- df.replace()
+- df.pop
+- df["a"].value_counts()
+- df.nuinque() 查看有多少个不同值
+- pd.unique(series_data) # 获取唯一值
+- pd.value_counts(series_data) # 不同值出现的次数
+*** 新增一列
+- df["add'] = df["start"].apply(lambda x: 1 if x > thre else 0)
+*** 修改属性
+- df.index = [new_name]
+- df.columns = [new_ids]
+- df.rename()
+*** SQL
+- pd.read_sql
+- pd.read_sql_table
+- pd.read_sql_query
+*** 遍历
+- pd.iteritems()
+- pd.iterrows()
+** scikit-learn
+*** StandardScaler
+- sklearn.preprocessing.StandardScaler
+*** model_selection
+- model_selection.cross_val_score
+*** LabelEncoder & OneHotEncoder
+** venv
+- 创建虚拟环境, python -m venv env-name
+** collections
++ OrderedDict有序字典
++ deque双向队列
+** operator
++ itemgetter
+  使用多个元素排序sorted(list_tuples, key=itemgetter(1, 2), reverse=True)
+** itertools
++ chain
+#+begin_src python
+vecs = [[1], [2]]
+list(chain(*vecs))
+#+end_src
+** black
+*** 代码内开启关闭
++ #fmt: off
++ #fmt: on
+** yapf
++ # yapf: disable
++ # yapf: enable
+** pytest
++ pytest -s xx.py 可以输出print内容
+** yacs
++ 用于深度学习训练的配置文件管理模块
++ https://github.com/rbgirshick/yacs
+** json
++ python -m json.too /path/to/json
+** tensorflow
+- tf.Variable
+- tf.get_variable
+- tf.variable_scope
+- tf.nn.nce_loss
+- tf.argmax 最大值的索引
+- tf.nn.top_k
+- tensor2tensor average checkpoints
