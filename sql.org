@@ -1,0 +1,11 @@
+#+TITLE: Sql
+#+STARTUP: INDENT
+
+* 基本语法
+- group by
+- concat_ws
+- group_concat
+- cast(data as datetime)
+- convert(field, type)
+** 排序
+- ASC升序,DESC降序
