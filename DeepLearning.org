@@ -1,0 +1,24 @@
+#+TITLE: Deep Learning
+
+* cnn
+** feature map
+** receptive field
+* 损失函数
+** cross entropy
+loss = - (y * log(y^)) + (1 - y) * log(1 - y^)
+* 激活函数
+** sigmoid
+** tanh
+** relu
++ max(0, x), 梯度为1,方便计算
+** softmax
+- np.exp(z) / sum(np.exp(z))
+* 混淆矩阵
+** 定义
+|   | P  | N  |
+| T | TP | TN |
+| F | FP | FN |
+** Acc/P/R
++ acc = (TP + TN) / (P + N)
++ precision = (TP) / (TP + FP)
++ recall = TP / (TP + FN)
