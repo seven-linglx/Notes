@@ -14,13 +14,20 @@
   - [[#cygwin][cygwin]]
   - [[#vim][vim]]
   - [[#pycharm][pycharm]]
+  - [[#vscode][vscode]]
+  - [[#idea][idea]]
+  - [[#clion][clion]]
+  - [[#zsh][zsh]]
+  - [[#命令行工具cli][命令行工具(CLI)]]
 - [[#windows][windows]]
   - [[#终端][终端]]
   - [[#配置][配置]]
+  - [[#工具][工具]]
 - [[#linux--ubuntu][linux & ubuntu]]
   - [[#u-盘-read-only][U 盘 read-only]]
   - [[#将-capslock-设为-ctrl][将 CapsLock 设为 Ctrl]]
   - [[#安装emacs262][安装emacs26.2]]
+  - [[#命令][命令]]
 
 * Software Tips
 ** pipenv
@@ -54,15 +61,15 @@
 + windows位置%appdata%
 ** spacemacs/doom emacs (<2018-08-28 二>)
 *** 按键说明
- 1) 功能键
-    + C-  意思是按住  Ctrol 键
-    + M-   意指  Meta 键 (键盘上若无  Meta 键，则可以  ALT ESC 键来取而代之)
-    + DEL  意指退格键 (不是 删除( Delete) key)
-    + RET  意指回车键
-    + SPC  意指空格键
-    + ESC  意指  Escape 键
-    + TAB  意指  Tab 键
-    + 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta
+**** 功能键
++ C-  意思是按住  Ctrol 键
++ M-   意指  Meta 键 (键盘上若无  Meta 键，则可以  ALT ESC 键来取而代之)
++ DEL  意指退格键 (不是 删除( Delete) key)
++ RET  意指回车键
++ SPC  意指空格键
++ ESC  意指  Escape 键
++ TAB  意指  Tab 键
++ 像 "C-M-" (or "M-C") 这样连在一起的意味着同时按住  Control 和  Meta
 *** 查看变量的命令
 - 查看变量的值（c-h v），快捷键对应的函数(c-h k)，方便查找函数(c-h f)
 *** org中英文对齐
@@ -111,6 +118,8 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** set-face-underline
 *** 一些有用命令
 + SPC t i 显示代码缩进线
++ display-fill-column-indicator-mode 显示右边长度限制线
++ prog-mode emacs内置的编程模式
 *** 按键映射
 #+BEGIN_SRC elisp
 (define-key evil-insert-state-map (kbd "C-h") (kbd "<left>"))
@@ -144,6 +153,8 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 *** cc module
 - pip install cmake-language-server
 - spc h m h 查看cc帮助文档
+*** 启动时间
+emacs --insecure --timed-requires
 ** org-mode
 *** 超链接
 #+begin_src emacs-lisp
@@ -211,6 +222,13 @@ C-c C-x C-v
 *** 编译指令
 - cmake -G "MSYS Makefiles" ..
 - 生成compile_commands.json文件: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=NO
+- 交叉编译器，它有自己的标准库头文件目录,compile_commands.json里没包含
+#+begin_src cmake
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
+# https://blog.csdn.net/mumu0627/article/details/120053421
+#+end_src
 ** gcc/g++
 *** 添加头文件路径,多个就写多个-I
 - g++ -I/usr/local/include -I/usr/include
@@ -241,7 +259,7 @@ git config --global core.safecrlf warn
 **** git submodule sync
 **** git submodule init
 **** git submodule update
-*** 本地  reset后，造成与远程不同步时处理办法
+*** 本地reset后，造成与远程不同步时处理办法
  git pull --rebase origin master
 解决冲突再
  git rebase --continue
@@ -250,12 +268,24 @@ git config --global core.safecrlf warn
 - 修改pick为edit，保存退出
 - git commit --amend
 - git rebase --continue
+*** git add -p
++ 交互式stage改动,s表示分割现有改动
+*** git diff
++ git diff head~1 --name-status
++ git diff HEAD^ --name-only
+*** .gitignore
++ !*.py 只保留py文件
+*** tips
++ cd `git rev-parse --show-toplevel`
 ** tig (<2018-09-06 四>)
 *** keymap
 - [shift + c] switch to corresponding branch
+- 在stage页面,按\可以分割改动成多个区域,方便小粒度stage change
 *** 中文乱码
 1. sudo apt install libncursesw5 libncursesw5-dev //这个可以避免中文乱码
 2. 重新更新tig再安装
+*** themes
+- 在tigrc里添加source ~/.tig/theme.tigrc
 ** cygwin
 *** 安装  gcc/g++编译环境
 - cmake
@@ -290,6 +320,43 @@ export PATH=/cygdrive/c/ProgramData/Anaconda3:$PATH #注意要使用cygdrive/c/�
 ** pycharm
 *** Tips
 - 按tab会覆盖后面的内容，enter则是补全代码不覆盖
+*** settings
++ 当前行高亮, Caret row
++ hard wrap & virtual guide line(editor -> general -> apperence)
+** vscode
+**** vim
++ vim.foldfix 以更好方式浏览折叠的代码
+**** settings
++ window.restoreWindows为None
+** idea
+**** ideavim
++ :actionlist
++ :source ~/.ideavimrc
+**** settings
++ 修改选中变量高亮的背景颜色 settings -> editor -> general -> code -> identifier under caret
++ 选中内容的背景 settings -> editor -> color scheme -> general -> editor -> selection backgroound
+**** keymap
++ ctrl shift enter: 快速在末尾添加分号
+**** tips
++ (?is)key1.*?key2 同时搜索同时包含key1和key2,允许换行
+** clion
+**** tips
++ /** 回车可生成函数doxygen文档
+** zsh
++ mv a.txt a.md --> mv a.{txt, md}
++ mkdir abc & cd $_ 上个命令的最后一个参数存在_变量中
+** 命令行工具(CLI)
+*** bat
+- bat --config-file
+- bat --generate-config-file
+- bat --list-themes
+- export BA_CONFIG_PATH=/path/to/bat.conf
+- cygwin里使用bat,github.com/sharkdp/bat#cygwin
+*** wget
++ wget -no-check-certificat
++
+*** curl
++ curl --insecure
 * windows
 ** 终端
 先安装了 cygwin
@@ -307,6 +374,11 @@ zsh 中 git log 显示中文乱码，在 zshrc 中设置 export LESSCHARSET=UTF-
 1. 笔记本电脑关闭自带键盘
    - sc config i8042prt start= disabled
    - sc config i8042prt start= auto
+** 工具
++ utool
++ switcheroo
++ directory opus
++ listary
 * linux & ubuntu
 ** U 盘 read-only
 1) 方法一
@@ -331,3 +403,13 @@ run sudo dpkg-reconfigure keyboard-configuration
 - sudo add-apt-repository ppa:kelleyk/emacs
 - sudo apt update
 - sudo apt install emacs26
+** 命令
++ ln -s source target
++ cat source.txt | sort | uniq > target.txt 去除重复的行
++ rename -v 'src' 'tar' * # src.py -> tar.py
++ rename -v 's/src/tar/' * # perl版本
++ 0\1\2分别表示标准输入\标准输出\和标准错误
++ du -h --max-depth=1
++ df -h
++ ps -ef | grep python
++ wc -l `find . -name "*.js"` | tail -n1
