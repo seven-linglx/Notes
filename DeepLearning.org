@@ -2,7 +2,9 @@
 
 * cnn
 ** feature map
+[[file:e:/Notes/ObjectDetection.org::*feature map][feature map]]
 ** receptive field
+[[file:e:/Notes/ObjectDetection.org::*感受野(知乎lighthouse)][感受野(知乎lighthouse)]]
 * 损失函数
 ** cross entropy
 loss = - (y * log(y^)) + (1 - y) * log(1 - y^)
