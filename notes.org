@@ -155,6 +155,8 @@ region in VISUAL mode. The line or region is extended to the next bigger syntact
 - spc h m h 查看cc帮助文档
 *** 启动时间
 emacs --insecure --timed-requires
+*** flycheck
++ 当前buffer使用的syntax checkers(flycheck-verify-setup)
 ** org-mode
 *** 超链接
 #+begin_src emacs-lisp
